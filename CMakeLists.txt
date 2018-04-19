@@ -14,5 +14,5 @@ file(GLOB sources three-dim-util/*.cpp)
 
 add_library(three-dim-util STATIC ${headers} ${sources})
 
-install(FILES ${headers} DESTINATION include/three-dim-util)
-install(TARGETS three-dim-util ARCHIVE DESTINATION lib)
+install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/three-dim-util)
+install(TARGETS three-dim-util ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
