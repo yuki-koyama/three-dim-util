@@ -22,10 +22,10 @@ namespace threedimutil
     void drawCircle(double r);
     void drawCircle(double r, double trans_x, double trans_y);
     void drawEllipse(double r_x, double r_y, double trans_x, double trans_y);
-}
 
-inline void glColor(const Eigen::Vector3d& c) { glColor3d(c(0), c(1), c(2)); }
-inline void glColor(const Eigen::Vector3d& c, double a) { glColor4d(c(0), c(1), c(2), a); }
-inline void glVertex(const Eigen::Vector2d& v) { glVertex2d(v(0), v(1)); }
+    inline void glColor(const Eigen::Vector3d& c) { glColor3d(c(0), c(1), c(2)); }
+    inline void glColor(const Eigen::Vector3d& c, double a) { glColor4d(c(0), c(1), c(2), a); }
+    inline void glVertex(const Eigen::Vector2d& v) { glVertex2d(v(0), v(1)); }
+}
 
 #endif // GLUT_WRAPPER_HPP
