@@ -1,9 +1,6 @@
 #ifndef GLUT_WRAPPER_HPP
 #define GLUT_WRAPPER_HPP
 
-#include <string>
-#include <vector>
-#include <OpenGL/gl.h>
 #include <Eigen/Core>
 
 namespace threedimutil
