@@ -1,5 +1,6 @@
 #include "glut-wrapper.hpp"
 #include <three-dim-util/gl.hpp>
+#include <three-dim-util/gl-wrapper.hpp>
 #include <list>
 #include <Eigen/Geometry>
 
@@ -7,12 +8,7 @@ namespace threedimutil
 {
     using Eigen::Vector3d;
     using Eigen::Matrix4d;
-    
-    inline void glTranslate(const Eigen::Vector3d& t)
-    {
-        glTranslated(t(0), t(1), t(2));
-    }
-    
+        
     void drawSphere(double r, const Vector3d& p, int res)
     {
         glPushMatrix();
