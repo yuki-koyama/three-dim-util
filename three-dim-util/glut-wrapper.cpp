@@ -1,8 +1,6 @@
 #include "glut-wrapper.hpp"
+#include <three-dim-util/gl.hpp>
 #include <list>
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#include <GLUT/glut.h>
 #include <Eigen/Geometry>
 
 namespace threedimutil

@@ -12,6 +12,8 @@ include_directories(${OPENGL_INCLUDE_DIRS})
 include_directories(${GLUT_INCLUDE_DIRS})
 include_directories(${EIGEN3_INCLUDE_DIR})
 
+include_directories(${CMAKE_SOURCE_DIR})
+
 file(GLOB headers three-dim-util/*.hpp)
 file(GLOB sources three-dim-util/*.cpp)
 
