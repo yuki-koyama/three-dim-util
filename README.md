@@ -7,3 +7,7 @@ A library of utility functions for prototyping 3D graphics applications.
 - OpenGL
 - GLUT
 - Eigen <http://eigen.tuxfamily.org/>
+
+## Projects using three-dim-util
+
+- OptiMo <https://github.com/yuki-koyama/optimo>
