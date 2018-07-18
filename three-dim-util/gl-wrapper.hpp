@@ -13,6 +13,9 @@ namespace threedimutil
     inline void glVertex(const Eigen::Vector3d& v) { glVertex3d(v(0), v(1), v(2)); }
     
     inline void glTranslate(const Eigen::Vector3d& t) { glTranslated(t(0), t(1), t(2)); }
+    
+    inline void glLoadMatrix(const Eigen::Matrix4d& m) { glLoadMatrixd(m.data()); }
+    inline void glMultMatrix(const Eigen::Matrix4d& m) { glMultMatrixd(m.data()); }
 }
 
 #endif // GL_WRAPPER_HPP
