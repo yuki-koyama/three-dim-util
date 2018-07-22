@@ -16,6 +16,31 @@ namespace threedimutil
     
     inline void glLoadMatrix(const Eigen::Matrix4d& m) { glLoadMatrixd(m.data()); }
     inline void glMultMatrix(const Eigen::Matrix4d& m) { glMultMatrixd(m.data()); }
+    
+    inline void glReadPixels(int width,
+                             int height,
+                             Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>& R,
+                             Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>& G,
+                             Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>& B,
+                             Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>& A)
+    {
+        Eigen::Matrix<GLuint, Eigen::Dynamic, Eigen::Dynamic> buffer(width, height);
+        glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer.data());
+        R = Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>(width, height);
+        G = Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>(width, height);
+        B = Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>(width, height);
+        A = Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>(width, height);
+        for (int x = 0; x < width; ++ x)
+        {
+            for (int y = 0; y < height; ++ y)
+            {
+                R(x, y) = (buffer(x, y) & 0xff000000) >> 24;
+                G(x, y) = (buffer(x, y) & 0x00ff0000) >> 16;
+                B(x, y) = (buffer(x, y) & 0x0000ff00) >> 8;
+                A(x, y) = (buffer(x, y) & 0x000000ff) >> 0;
+            }
+        }
+    }
 }
 
 #endif // GL_WRAPPER_HPP
