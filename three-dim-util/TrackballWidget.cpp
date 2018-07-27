@@ -1,7 +1,10 @@
 #include "TrackballWidget.hpp"
+#include <sstream>
+#include <iomanip>
 #include <three-dim-util/gl-wrapper.hpp>
 #include <three-dim-util/glu-wrapper.hpp>
 #include <QMouseEvent>
+#include <QString>
 
 namespace threedimutil
 {
@@ -77,8 +80,27 @@ namespace threedimutil
         threedimutil::look_at(camera_.position_, camera_.target_, camera_.up_);
     }
     
-    void TrackballWidget::grab(const std::string& output_file_path)
+    void TrackballWidget::saveImage(const std::string& output_file_path)
     {
-        QOpenGLWidget::grab().save(QString::fromStdString(output_file_path));
+        grab().save(QString::fromStdString(output_file_path));
+    }
+    
+    void TrackballWidget::saveImageSequence(const std::string &output_directory_path, const std::string &prefix)
+    {
+        constexpr int num_frames   = 400;
+        constexpr int speed_factor = 5;
+        camera_.BeginTrackball(0, 0, threedimutil::Camera::Mode::Rotate);
+        for (int i = 0; i < num_frames; ++ i)
+        {
+            const std::string num = [&]()
+            {
+                std::ostringstream sout;
+                sout << std::setfill('0') << std::setw(5) << i;
+                return sout.str();
+            }();
+            saveImage(output_directory_path + "/" + prefix + num + ".png");
+            camera_.MoveTrackball(i * speed_factor, 0);
+        }
+        camera_.EndTrackball();
     }
 }
