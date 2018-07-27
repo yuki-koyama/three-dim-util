@@ -85,8 +85,11 @@ namespace threedimutil
         grab().save(QString::fromStdString(output_file_path));
     }
     
-    void TrackballWidget::saveImageSequence(const std::string &output_directory_path, const std::string &prefix)
+    void TrackballWidget::saveImageSequence(const std::string &output_directory_path,
+                                            const std::string &prefix,
+                                            int num_digits)
     {
+        assert(num_digits >= 2);
         constexpr int num_frames   = 400;
         constexpr int speed_factor = 5;
         camera_.BeginTrackball(0, 0, threedimutil::Camera::Mode::Rotate);
@@ -95,7 +98,7 @@ namespace threedimutil
             const std::string num = [&]()
             {
                 std::ostringstream sout;
-                sout << std::setfill('0') << std::setw(5) << i;
+                sout << std::setfill('0') << std::setw(num_digits) << i;
                 return sout.str();
             }();
             saveImage(output_directory_path + "/" + prefix + num + ".png");

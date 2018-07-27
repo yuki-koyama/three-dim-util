@@ -22,7 +22,9 @@ namespace threedimutil
         void wheelEvent(QWheelEvent* event);
         
         void saveImage(const std::string& output_file_path);
-        void saveImageSequence(const std::string& output_directory_path, const std::string& prefix);
+        void saveImageSequence(const std::string& output_directory_path,
+                               const std::string& prefix,
+                               int num_digits = 6);
         
         threedimutil::Camera& camera() { return camera_; }
         
