@@ -4,13 +4,23 @@ project(three-dim-util CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 
+if(APPLE AND EXISTS /usr/local/opt/qt)
+	list(APPEND CMAKE_PREFIX_PATH "/usr/local/opt/qt")
+endif()
+if(APPLE AND EXISTS /usr/local/opt/qt5)
+	list(APPEND CMAKE_PREFIX_PATH "/usr/local/opt/qt5")
+endif()
+
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(Eigen3 REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Gui REQUIRED)
 
 include_directories(${OPENGL_INCLUDE_DIRS})
 include_directories(${GLUT_INCLUDE_DIRS})
 include_directories(${EIGEN3_INCLUDE_DIR})
+include_directories(${Qt5Gui_INCLUDE_DIRS})
+include_directories(${Qt5Widgets_INCLUDE_DIRS})
 
 include_directories(${CMAKE_SOURCE_DIR})
 
