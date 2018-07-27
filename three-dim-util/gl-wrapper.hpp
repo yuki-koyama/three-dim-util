@@ -6,12 +6,13 @@
 
 namespace threedimutil
 {
-    inline void glColor(const Eigen::Vector3d& c) { glColor3d(c(0), c(1), c(2)); }
-    inline void glColor(const Eigen::Vector3d& c, double a) { glColor4d(c(0), c(1), c(2), a); }
+    inline void clear_color_3d(const Eigen::Vector3d& c) { glClearColor(c(0), c(1), c(2), 1.0); }
+    inline void color_3d(const Eigen::Vector3d& c) { glColor3d(c(0), c(1), c(2)); }
+    inline void color_4d(const Eigen::Vector3d& c, double a) { glColor4d(c(0), c(1), c(2), a); }
     
-    inline void glVertex(const Eigen::Vector2d& v) { glVertex2d(v(0), v(1)); }
-    inline void glVertex(const Eigen::Vector3d& v) { glVertex3d(v(0), v(1), v(2)); }
-    
+    inline void vertex_2d(const Eigen::Vector2d& v) { glVertex2d(v(0), v(1)); }
+    inline void vertex_3d(const Eigen::Vector3d& v) { glVertex3d(v(0), v(1), v(2)); }
+
     inline void glTranslate(const Eigen::Vector3d& t) { glTranslated(t(0), t(1), t(2)); }
     
     inline void glLoadMatrix(const Eigen::Matrix4d& m) { glLoadMatrixd(m.data()); }
