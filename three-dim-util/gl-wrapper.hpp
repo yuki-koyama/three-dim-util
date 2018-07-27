@@ -17,12 +17,12 @@ namespace threedimutil
     inline void glLoadMatrix(const Eigen::Matrix4d& m) { glLoadMatrixd(m.data()); }
     inline void glMultMatrix(const Eigen::Matrix4d& m) { glMultMatrixd(m.data()); }
     
-    inline void glReadPixels(int width,
-                             int height,
-                             Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>& R,
-                             Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>& G,
-                             Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>& B,
-                             Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>& A)
+    inline void read_pixels(int width,
+                            int height,
+                            Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>& R,
+                            Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>& G,
+                            Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>& B,
+                            Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>& A)
     {
         Eigen::Matrix<GLuint, Eigen::Dynamic, Eigen::Dynamic> buffer(width, height);
         glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer.data());
