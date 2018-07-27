@@ -12,7 +12,7 @@ namespace threedimutil
     void drawSphere(double r, const Vector3d& p, int res)
     {
         glPushMatrix();
-        glTranslate(p);
+        translate(p);
         drawSphere(r, res);
         glPopMatrix();
     }
@@ -55,7 +55,7 @@ namespace threedimutil
         if (fabs(c - 1.0) < 1e-16) rot = Matrix4d::Identity();
         
         glPushMatrix();
-        glTranslate(p1);
+        translate(p1);
         glMultMatrixd(rot.data()); // rot.data() is column-major
         drawCylinder(r, h, res, false);
         glPopMatrix();
@@ -77,11 +77,11 @@ namespace threedimutil
         glPopMatrix();
     }
     
-    void drawCube(const Vector3d& translate, double x, double y, double z, bool center)
+    void drawCube(const Vector3d& t, double x, double y, double z, bool center)
     {
         assert (center);
         glPushMatrix();
-        glTranslate(translate);
+        translate(t);
         glScaled(x, y, z);
         glutSolidCube(1.0);
         glPopMatrix();
@@ -105,9 +105,9 @@ namespace threedimutil
         glEnd();
     }
     
-    void drawRectangle(const Eigen::Vector2d& translate, double x, double y)
+    void drawRectangle(const Eigen::Vector2d& t, double x, double y)
     {
-        drawRectangle(translate(0), translate(1), x, y);
+        drawRectangle(t(0), t(1), x, y);
     }
     
     void drawRectangle(double trans_x, double trans_y, double size_x, double size_y)
