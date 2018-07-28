@@ -1,4 +1,4 @@
-#include "TrackballWidget.hpp"
+#include "trackball-widget.hpp"
 #include <sstream>
 #include <iomanip>
 #include <three-dim-util/gl-wrapper.hpp>
