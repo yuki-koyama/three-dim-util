@@ -13,6 +13,15 @@ namespace threedimutil
     {
     }
     
+    void Camera::RotateAroundTarget(double theta_in_radian)
+    {
+        // Horizontal rotation
+        const Matrix3d rot_h = AngleAxisd(theta_in_radian, up_).matrix();
+        
+        // Update the camera position
+        position_ = target_ + rot_h * (position_ - target_);
+    }
+    
     void Camera::BeginTrackball(int x, int y, Mode mode)
     {
         mode_ = mode;
@@ -24,7 +33,7 @@ namespace threedimutil
         const double scale_x = 2000.0;
         const double scale_y = 2000.0;
         
-        switch (mode_) 
+        switch (mode_)
         {
             case Mode::None:
                 break;

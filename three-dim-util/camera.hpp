@@ -23,6 +23,10 @@ namespace threedimutil
         Eigen::Vector3d target_;
         Eigen::Vector3d up_;
         
+        // Method for animated visualization
+        void RotateAroundTarget(double theta_in_radian);
+        
+        // Methods for cursor interaction
         void BeginTrackball(int x, int y, Mode mode);
         void MoveTrackball (int x, int y);
         void EndTrackball  ();
