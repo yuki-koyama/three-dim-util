@@ -90,9 +90,9 @@ namespace threedimutil
                                             int num_digits)
     {
         assert(num_digits >= 2);
-        constexpr int num_frames   = 400;
-        constexpr int speed_factor = 5;
-        camera_.BeginTrackball(0, 0, threedimutil::Camera::Mode::Rotate);
+        constexpr int    num_frames = 300;
+        constexpr int    times      = 2;
+        constexpr double theta      = static_cast<double>(times) * 2.0 * M_PI / static_cast<double>(num_frames);
         for (int i = 0; i < num_frames; ++ i)
         {
             const std::string num = [&]()
@@ -102,8 +102,7 @@ namespace threedimutil
                 return sout.str();
             }();
             saveImage(output_directory_path + "/" + prefix + num + ".png");
-            camera_.MoveTrackball(i * speed_factor, 0);
+            camera_.RotateAroundTarget(theta);
         }
-        camera_.EndTrackball();
     }
 }
