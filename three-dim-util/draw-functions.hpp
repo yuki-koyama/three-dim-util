@@ -6,6 +6,30 @@
 
 namespace threedimutil
 {
+    inline void draw_points(const Eigen::MatrixXd& P)
+    {
+        assert(P.cols() == 3);
+        glBegin(GL_POINTS);
+        for (int i = 0; i < P.rows(); ++ i)
+        {
+            threedimutil::vertex_3d(P.row(i));
+        }
+        glEnd();
+    }
+
+    inline void draw_points(const Eigen::MatrixXd& P, const Eigen::MatrixXd& C)
+    {
+        assert(P.cols() == 3);
+        assert(C.cols() == 3);
+        glBegin(GL_POINTS);
+        for (int i = 0; i < P.rows(); ++ i)
+        {
+            threedimutil::color_3d(C.row(i));
+            threedimutil::vertex_3d(P.row(i));
+        }
+        glEnd();
+    }
+    
     inline void draw_edges(const Eigen::MatrixXd& P, const Eigen::MatrixXi& E)
     {
         assert(P.cols() == 3);
