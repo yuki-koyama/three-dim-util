@@ -7,6 +7,7 @@ A library of utility functions for prototyping 3D graphics applications.
 - OpenGL
 - GLUT
 - Eigen <http://eigen.tuxfamily.org/>
+- Qt <https://www.qt.io/>
 
 ## Projects using three-dim-util
 
