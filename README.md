@@ -2,6 +2,12 @@
 
 A library of utility functions for prototyping 3D graphics applications.
 
+## Features
+
+- Has APIs for Eigen matrix/vector representation
+- Has a template of Qt-based OpenGL widget with simple mouse interaction
+- Is NOT optimized for efficiency (if your application requires a high compute efficiency, do not use this library)
+
 ## Dependencies
 
 - OpenGL
