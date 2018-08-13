@@ -13,14 +13,6 @@ namespace threedimutil
     public:
         TrackballWidget(QWidget *parent = nullptr);
         
-        void initializeGL();
-        void resizeGL(int w, int h);
-        
-        void mousePressEvent(QMouseEvent* event);
-        void mouseMoveEvent(QMouseEvent* event);
-        void mouseReleaseEvent(QMouseEvent*);
-        void wheelEvent(QWheelEvent* event);
-        
         void saveImage(const std::string& output_file_path);
         void saveImageSequence(const std::string& output_directory_path,
                                const std::string& prefix,
@@ -29,9 +21,17 @@ namespace threedimutil
         threedimutil::Camera& camera() { return camera_; }
         
     protected:
+        void initializeGL();
+        void resizeGL(int w, int h);
+        
+        void mousePressEvent(QMouseEvent* event);
+        void mouseMoveEvent(QMouseEvent* event);
+        void mouseReleaseEvent(QMouseEvent*);
+        void wheelEvent(QWheelEvent* event);
+        
         void setProjectionMatrix();
         void setModelViewMatrix();
-
+        
     private:
         const int num_samples_ = 8;
         const Eigen::Vector3d background_color_ { 0.9, 0.9, 0.9 };
