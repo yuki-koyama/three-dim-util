@@ -2,7 +2,7 @@
 #include <sstream>
 #include <iomanip>
 #include <three-dim-util/gl-wrapper.hpp>
-#include <three-dim-util/glu-wrapper.hpp>
+#include <three-dim-util/matrix.hpp>
 #include <QMouseEvent>
 #include <QString>
 
@@ -67,17 +67,19 @@ namespace threedimutil
     
     void TrackballWidget::setProjectionMatrix()
     {
-        const double aspect = static_cast<double>(this->width()) / static_cast<double>(this->height());
+        constexpr double near = 0.05;
+        constexpr double far  = 20.0;
+        const double aspect = static_cast<double>(width()) / static_cast<double>(height());
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        gluPerspective(camera_.vertical_angle_of_view_, aspect, 0.05, 20.0);
+        threedimutil::mult_matrix(threedimutil::make_perspective(camera_.vertical_angle_of_view_, aspect, near, far));
     }
     
     void TrackballWidget::setModelViewMatrix()
     {
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        threedimutil::look_at(camera_.position_, camera_.target_, camera_.up_);
+        threedimutil::mult_matrix(threedimutil::make_look_at(camera_.position_, camera_.target_, camera_.up_));
     }
     
     void TrackballWidget::saveImage(const std::string& output_file_path)

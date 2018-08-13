@@ -23,7 +23,7 @@ namespace threedimutil
     protected:
         void initializeGL();
         void resizeGL(int w, int h);
-       
+        
         // This method is intended to be overridden in user-defined classes
         void paintGL() {}
         
