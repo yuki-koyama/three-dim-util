@@ -28,7 +28,7 @@ file(GLOB headers three-dim-util/*.hpp)
 file(GLOB sources three-dim-util/*.cpp)
 
 add_library(three-dim-util STATIC ${headers} ${sources})
-target_link_libraries(three-dim-util ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
+target_link_libraries(three-dim-util ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} Qt5::Gui Qt5::Widgets)
 
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/three-dim-util)
 install(TARGETS three-dim-util ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
