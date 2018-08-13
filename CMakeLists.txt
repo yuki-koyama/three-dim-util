@@ -32,3 +32,8 @@ target_link_libraries(three-dim-util ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
 
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/three-dim-util)
 install(TARGETS three-dim-util ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+
+option(THREEDIMUTIL_BUILD_DEMOS "Build demos" OFF)
+if(THREEDIMUTIL_BUILD_DEMOS)
+	add_subdirectory(demos/trackball-widget-demo)
+endif()
