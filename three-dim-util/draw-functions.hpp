@@ -2,7 +2,7 @@
 #define draw_utils_hpp
 
 #include <Eigen/Core>
-#include <three-dim-util/gl.hpp>
+#include <three-dim-util/gl-wrapper.hpp>
 
 namespace threedimutil
 {
