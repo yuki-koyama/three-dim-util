@@ -15,12 +15,14 @@ find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(Qt5 COMPONENTS Widgets Gui REQUIRED)
+find_package(glm REQUIRED)
 
 include_directories(${OPENGL_INCLUDE_DIRS})
 include_directories(${GLUT_INCLUDE_DIRS})
 include_directories(${EIGEN3_INCLUDE_DIR})
 include_directories(${Qt5Gui_INCLUDE_DIRS})
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
+include_directories(${GLM_INCLUDE_DIRS})
 
 include_directories(${CMAKE_SOURCE_DIR})
 
