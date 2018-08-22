@@ -14,6 +14,7 @@ namespace threedimutil
     inline void vertex_3d(const Eigen::Vector3d& v) { glVertex3d(v(0), v(1), v(2)); }
 
     inline void translate(const Eigen::Vector3d& t) { glTranslated(t(0), t(1), t(2)); }
+    inline void rotate(double angle, const Eigen::Vector3d& axis) { glRotated(angle, axis(0), axis(1), axis(2)); }
     
     inline void load_matrix(const Eigen::Matrix4d& m) { glLoadMatrixd(m.data()); }
     inline void mult_matrix(const Eigen::Matrix4d& m) { glMultMatrixd(m.data()); }
