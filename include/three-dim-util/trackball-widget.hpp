@@ -1,10 +1,10 @@
 #ifndef TrackballWidget_hpp
 #define TrackballWidget_hpp
 
+#include <three-dim-util/camera.hpp>
 #include <string>
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
-#include <three-dim-util/camera.hpp>
 
 namespace threedimutil
 {

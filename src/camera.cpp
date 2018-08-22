@@ -1,4 +1,4 @@
-#include "camera.hpp"
+#include <three-dim-util/camera.hpp>
 #include <Eigen/Geometry>
 
 namespace threedimutil

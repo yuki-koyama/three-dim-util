@@ -1,8 +1,8 @@
 #ifndef GL_WRAPPER_HPP
 #define GL_WRAPPER_HPP
 
-#include <Eigen/Core>
 #include <three-dim-util/gl.hpp>
+#include <Eigen/Core>
 
 namespace threedimutil
 {

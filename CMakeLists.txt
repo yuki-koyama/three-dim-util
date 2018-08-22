@@ -24,13 +24,12 @@ include_directories(${Qt5Gui_INCLUDE_DIRS})
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 include_directories(${GLM_INCLUDE_DIRS})
 
-include_directories(${CMAKE_SOURCE_DIR})
-
-file(GLOB headers three-dim-util/*.hpp)
-file(GLOB sources three-dim-util/*.cpp)
+file(GLOB headers ${CMAKE_CURRENT_SOURCE_DIR}/include/three-dim-util/*.hpp)
+file(GLOB sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp)
 
 add_library(three-dim-util STATIC ${headers} ${sources})
 target_link_libraries(three-dim-util ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} Qt5::Gui Qt5::Widgets)
+target_include_directories(three-dim-util PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/three-dim-util)
 install(TARGETS three-dim-util ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)

@@ -1,4 +1,4 @@
-#include "glut-wrapper.hpp"
+#include <three-dim-util/glut-wrapper.hpp>
 #include <three-dim-util/gl.hpp>
 #include <three-dim-util/gl-wrapper.hpp>
 #include <list>

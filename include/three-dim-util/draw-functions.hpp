@@ -1,8 +1,8 @@
 #ifndef draw_utils_hpp
 #define draw_utils_hpp
 
-#include <Eigen/Core>
 #include <three-dim-util/gl-wrapper.hpp>
+#include <Eigen/Core>
 
 namespace threedimutil
 {

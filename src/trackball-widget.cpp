@@ -1,8 +1,8 @@
-#include "trackball-widget.hpp"
-#include <sstream>
-#include <iomanip>
+#include <three-dim-util/trackball-widget.hpp>
 #include <three-dim-util/gl-wrapper.hpp>
 #include <three-dim-util/matrix.hpp>
+#include <sstream>
+#include <iomanip>
 #include <QMouseEvent>
 #include <QString>
 
