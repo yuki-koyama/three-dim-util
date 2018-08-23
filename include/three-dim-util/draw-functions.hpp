@@ -6,13 +6,21 @@
 
 namespace threedimutil
 {
+    inline void draw_point(const Eigen::Vector3d& p)
+    {
+        assert(p.rows() == 3);
+        glBegin(GL_POINTS);
+        vertex_3d(p);
+        glEnd();
+    }
+    
     inline void draw_points(const Eigen::MatrixXd& P)
     {
         assert(P.cols() == 3);
         glBegin(GL_POINTS);
         for (int i = 0; i < P.rows(); ++ i)
         {
-            threedimutil::vertex_3d(P.row(i));
+            vertex_3d(P.row(i));
         }
         glEnd();
     }
@@ -24,8 +32,8 @@ namespace threedimutil
         glBegin(GL_POINTS);
         for (int i = 0; i < P.rows(); ++ i)
         {
-            threedimutil::color_3d(C.row(i));
-            threedimutil::vertex_3d(P.row(i));
+            color_3d(C.row(i));
+            vertex_3d(P.row(i));
         }
         glEnd();
     }
@@ -37,8 +45,8 @@ namespace threedimutil
         glBegin(GL_LINES);
         for (int i = 0; i < E.rows(); ++ i)
         {
-            threedimutil::vertex_3d(P.row(E(i, 0)));
-            threedimutil::vertex_3d(P.row(E(i, 1)));
+            vertex_3d(P.row(E(i, 0)));
+            vertex_3d(P.row(E(i, 1)));
         }
         glEnd();
     }
@@ -50,9 +58,9 @@ namespace threedimutil
         glBegin(GL_TRIANGLES);
         for (int i = 0; i < F.rows(); ++ i)
         {
-            threedimutil::vertex_3d(V.row(F(i, 0)));
-            threedimutil::vertex_3d(V.row(F(i, 1)));
-            threedimutil::vertex_3d(V.row(F(i, 2)));
+            vertex_3d(V.row(F(i, 0)));
+            vertex_3d(V.row(F(i, 1)));
+            vertex_3d(V.row(F(i, 2)));
         }
         glEnd();
     }
