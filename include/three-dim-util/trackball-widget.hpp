@@ -10,8 +10,9 @@ namespace threedimutil
 {
     class TrackballWidget : public QOpenGLWidget, protected QOpenGLFunctions
     {
+        Q_OBJECT
     public:
-        TrackballWidget(QWidget *parent = nullptr);
+        explicit TrackballWidget(QWidget *parent = nullptr);
         
         void saveImage(const std::string& output_file_path);
         void saveImageSequence(const std::string& output_directory_path,
