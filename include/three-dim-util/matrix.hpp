@@ -1,6 +1,7 @@
 #ifndef matrix_hpp
 #define matrix_hpp
 
+#include <three-dim-util/camera.hpp>
 #include <Eigen/Core>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -33,6 +34,11 @@ namespace threedimutil
                                           glm::vec3(target_position(0), target_position(1), target_position(2)),
                                           glm::vec3(up_direction(0), up_direction(1), up_direction(2)));
         return convert_matrix_type(mat);
+    }
+    
+    inline Eigen::Matrix4d make_look_at(const Camera& camera)
+    {
+        return make_look_at(camera.position(), camera.target(), camera.up());
     }
     
     inline Eigen::Matrix4d make_ortho(double left,
