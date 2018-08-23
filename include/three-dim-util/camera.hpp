@@ -10,19 +10,23 @@ namespace threedimutil
     public:
         Camera();
         
-        enum class Mode {
+        enum class Mode
+        {
             Rotate,
             Pan,
             Zoom,
             None
         };
         
-        double vertical_angle_of_view_ = 45.0;
+        double vertical_angle_of_view() const { return vertical_angle_of_view_; }
         
-        Eigen::Vector3d position_;
-        Eigen::Vector3d target_;
-        Eigen::Vector3d up_;
-        
+        Eigen::Vector3d& position() { return position_; }
+        const Eigen::Vector3d& position() const { return position_; }
+        Eigen::Vector3d& target() { return target_; }
+        const Eigen::Vector3d& target() const { return target_; }
+        Eigen::Vector3d& up() { return up_; }
+        const Eigen::Vector3d& up() const { return up_; }
+
         // Method for animated visualization
         void RotateAroundTarget(double theta_in_radian);
         
@@ -34,6 +38,13 @@ namespace threedimutil
     private:
         Mode mode_;
         Eigen::Vector2i prev_position_;
+        
+    private:
+        double vertical_angle_of_view_ = 45.0;
+        
+        Eigen::Vector3d position_;
+        Eigen::Vector3d target_;
+        Eigen::Vector3d up_;
     };
 }
 
