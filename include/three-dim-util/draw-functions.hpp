@@ -6,36 +6,51 @@
 
 namespace threedimutil
 {
-    inline void draw_point(const Eigen::Vector3d& p)
+    inline void draw_point(const Eigen::Vector3d& p, double size = 12.0)
     {
         assert(p.rows() == 3);
+
+        GLint function;
+        glGetIntegerv(GL_DEPTH_FUNC, &function);
+        
+        GLdouble color[4];
+        glGetDoublev(GL_CURRENT_COLOR, color);
+        
+        glDepthFunc(GL_LEQUAL);
+        
+        glPointSize(size);
+        glColor3d(1.0, 1.0, 1.0);
         glBegin(GL_POINTS);
         vertex_3d(p);
         glEnd();
+        
+        glPointSize(size * 0.8);
+        glColor4dv(color);
+        glBegin(GL_POINTS);
+        vertex_3d(p);
+        glEnd();
+        
+        glDepthFunc(function);
     }
     
-    inline void draw_points(const Eigen::MatrixXd& P)
+    inline void draw_points(const Eigen::MatrixXd& P, double size = 12.0)
     {
         assert(P.cols() == 3);
-        glBegin(GL_POINTS);
         for (int i = 0; i < P.rows(); ++ i)
         {
-            vertex_3d(P.row(i));
+            draw_point(P.row(i), size);
         }
-        glEnd();
     }
 
-    inline void draw_points(const Eigen::MatrixXd& P, const Eigen::MatrixXd& C)
+    inline void draw_points(const Eigen::MatrixXd& P, const Eigen::MatrixXd& C, double size = 12.0)
     {
         assert(P.cols() == 3);
         assert(C.cols() == 3);
-        glBegin(GL_POINTS);
         for (int i = 0; i < P.rows(); ++ i)
         {
             color_3d(C.row(i));
-            vertex_3d(P.row(i));
+            draw_point(P.row(i), size);
         }
-        glEnd();
     }
     
     inline void draw_edges(const Eigen::MatrixXd& P, const Eigen::MatrixXi& E)
