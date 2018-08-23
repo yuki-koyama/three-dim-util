@@ -20,6 +20,12 @@ namespace threedimutil
                                int num_digits = 6);
         
         threedimutil::Camera& camera() { return camera_; }
+        const threedimutil::Camera& camera() const { return camera_; }
+        
+        double& near_clip() { return near_clip_; }
+        double near_clip() const { return near_clip_; }
+        double& far_clip() { return far_clip_; }
+        double far_clip() const { return far_clip_; }
         
     protected:
         void initializeGL();
@@ -41,6 +47,8 @@ namespace threedimutil
         const Eigen::Vector3d background_color_ { 0.9, 0.9, 0.9 };
         
         threedimutil::Camera camera_;
+        double near_clip_ = 0.05;
+        double far_clip_  = 20.0;
     };
 }
 

@@ -8,6 +8,13 @@
 
 namespace threedimutil
 {
+    TrackballWidget::TrackballWidget(QWidget *parent) : QOpenGLWidget(parent)
+    {
+        QSurfaceFormat format = QSurfaceFormat::defaultFormat();
+        format.setSamples(num_samples_);
+        this->setFormat(format);
+    }
+    
     void TrackballWidget::initializeGL()
     {
         initializeOpenGLFunctions();
@@ -24,13 +31,6 @@ namespace threedimutil
     void TrackballWidget::resizeGL(int w, int h)
     {
         glViewport(0, 0, w, h);
-    }
-    
-    TrackballWidget::TrackballWidget(QWidget *parent) : QOpenGLWidget(parent)
-    {
-        QSurfaceFormat format = QSurfaceFormat::defaultFormat();
-        format.setSamples(num_samples_);
-        this->setFormat(format);
     }
     
     void TrackballWidget::mousePressEvent(QMouseEvent* event)
@@ -67,19 +67,17 @@ namespace threedimutil
     
     void TrackballWidget::setProjectionMatrix()
     {
-        constexpr double near = 0.05;
-        constexpr double far  = 20.0;
         const double aspect = static_cast<double>(width()) / static_cast<double>(height());
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        threedimutil::mult_matrix(threedimutil::make_perspective(camera_.vertical_angle_of_view_, aspect, near, far));
+        threedimutil::mult_matrix(threedimutil::make_perspective(camera_.vertical_angle_of_view(), aspect, near_clip_, far_clip_));
     }
     
     void TrackballWidget::setModelViewMatrix()
     {
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        threedimutil::mult_matrix(threedimutil::make_look_at(camera_.position_, camera_.target_, camera_.up_));
+        threedimutil::mult_matrix(threedimutil::make_look_at(camera_));
     }
     
     void TrackballWidget::saveImage(const std::string& output_file_path)
