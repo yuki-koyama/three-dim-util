@@ -26,7 +26,7 @@ namespace threedimutil
         const Eigen::Vector3d& target() const { return target_; }
         Eigen::Vector3d& up() { return up_; }
         const Eigen::Vector3d& up() const { return up_; }
-
+        
         // Method for animated visualization
         void RotateAroundTarget(double theta_in_radian);
         
@@ -36,15 +36,14 @@ namespace threedimutil
         void EndTrackball  ();
         
     private:
-        Mode mode_;
-        Eigen::Vector2i prev_position_;
-        
-    private:
         double vertical_angle_of_view_ = 45.0;
         
         Eigen::Vector3d position_;
         Eigen::Vector3d target_;
         Eigen::Vector3d up_;
+        
+        Mode mode_;
+        Eigen::Vector2i prev_position_;
     };
 }
 
