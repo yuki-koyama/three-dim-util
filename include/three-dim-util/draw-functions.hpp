@@ -6,10 +6,8 @@
 
 namespace threedimutil
 {
-    inline void draw_point(const Eigen::Vector3d& p, double size = 12.0)
+    inline void draw_point_with_border(const Eigen::Vector3d& p, double size = 12.0)
     {
-        assert(p.rows() == 3);
-
         GLint function;
         glGetIntegerv(GL_DEPTH_FUNC, &function);
         
@@ -33,13 +31,12 @@ namespace threedimutil
         glDepthFunc(function);
     }
     
-    inline void draw_points(const Eigen::MatrixXd& P, double size = 12.0)
+    inline void draw_point(const Eigen::Vector3d& p, double size = 12.0)
     {
-        assert(P.cols() == 3);
-        for (int i = 0; i < P.rows(); ++ i)
-        {
-            draw_point(P.row(i), size);
-        }
+        glPointSize(size);
+        glBegin(GL_POINTS);
+        vertex_3d(p);
+        glEnd();
     }
     
     inline void draw_points(const Eigen::MatrixXd& P, const Eigen::MatrixXd& C, double size = 12.0)
