@@ -61,32 +61,6 @@ namespace threedimutil
         glPopMatrix();
     }
     
-    void drawCube(double size, bool center)
-    {
-        assert (center);
-        
-        glutSolidCube(size);
-    }
-    
-    void drawCube(double x, double y, double z, bool center)
-    {
-        assert (center);
-        glPushMatrix();
-        glScaled(x, y, z);
-        glutSolidCube(1.0);
-        glPopMatrix();
-    }
-    
-    void drawCube(const Vector3d& t, double x, double y, double z, bool center)
-    {
-        assert (center);
-        glPushMatrix();
-        translate(t);
-        glScaled(x, y, z);
-        glutSolidCube(1.0);
-        glPopMatrix();
-    }
-    
     void drawFrame(double length, double width)
     {
         const double l = length;

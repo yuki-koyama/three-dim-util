@@ -10,9 +10,6 @@ namespace threedimutil
     void drawCylinder(double r, double h, int res = 60, bool center = true);
     void drawCylinder(double r1, double r2, double h, int res = 60, bool center = true);
     void drawCylinder(double r, const Eigen::Vector3d& p1, const Eigen::Vector3d& p2, int res = 60);
-    void drawCube(double size, bool center = true);
-    void drawCube(double x, double y, double z, bool center = true);
-    void drawCube(const Eigen::Vector3d& translate, double x, double y, double z, bool center = true);
     void drawFrame(double length, double width = 3.0);
     void drawRectangle(const Eigen::Vector2d& translate, double x, double y);
     void drawRectangle(double trans_x, double trans_y, double size_x, double size_y);
