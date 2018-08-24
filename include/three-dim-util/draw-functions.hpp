@@ -119,14 +119,55 @@ namespace threedimutil
             +0.5, -0.5, +0.5
         };
         
+        constexpr GLdouble normals[] =
+        {
+            0.0, 0.0, +1.0,
+            0.0, 0.0, +1.0,
+            0.0, 0.0, +1.0,
+            0.0, 0.0, +1.0,
+            
+            +1.0, 0.0, 0.0,
+            +1.0, 0.0, 0.0,
+            +1.0, 0.0, 0.0,
+            +1.0, 0.0, 0.0,
+            
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0,
+            
+            -1.0, 0.0, 0.0,
+            -1.0, 0.0, 0.0,
+            -1.0, 0.0, 0.0,
+            -1.0, 0.0, 0.0,
+            
+            0.0, +1.0, 0.0,
+            0.0, +1.0, 0.0,
+            0.0, +1.0, 0.0,
+            0.0, +1.0, 0.0,
+            
+            0.0, -1.0, 0.0,
+            0.0, -1.0, 0.0,
+            0.0, -1.0, 0.0,
+            0.0, -1.0, 0.0
+        };
+        
+        const GLboolean is_gl_normalize_enabled = glIsEnabled(GL_NORMALIZE);
+        
+        glEnable(GL_NORMALIZE);
         glPushMatrix();
         glScaled(x, y, z);
         translate(t);
         glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_NORMAL_ARRAY);
         glVertexPointer(3, GL_DOUBLE, 0, vertices);
+        glNormalPointer(GL_DOUBLE, 0, normals);
         glDrawArrays(GL_QUADS, 0, 4 * 6);
         glDisableClientState(GL_VERTEX_ARRAY);
+        glDisableClientState(GL_NORMAL_ARRAY);
         glPopMatrix();
+        
+        if (!is_gl_normalize_enabled) { glDisable(GL_NORMALIZE); }
     }
     
     inline void draw_cube(double size = 1.0)
