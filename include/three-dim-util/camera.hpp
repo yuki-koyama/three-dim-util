@@ -18,6 +18,7 @@ namespace threedimutil
             None
         };
         
+        double& vertical_angle_of_view() { return vertical_angle_of_view_; }
         double vertical_angle_of_view() const { return vertical_angle_of_view_; }
         
         Eigen::Vector3d& position() { return position_; }
