@@ -128,6 +128,11 @@ namespace threedimutil
         glDisableClientState(GL_VERTEX_ARRAY);
         glPopMatrix();
     }
+    
+    inline void draw_cube(double size = 1.0)
+    {
+        draw_cube(Eigen::Vector3d::Zero(), size, size, size);
+    }
 }
 
 #endif /* draw_utils_hpp */
