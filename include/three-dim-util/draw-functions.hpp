@@ -79,6 +79,51 @@ namespace threedimutil
         }
         glEnd();
     }
+    
+    inline void draw_cube(const Eigen::Vector3d& t, double x, double y, double z)
+    {
+        constexpr GLdouble vertices[] =
+        {
+            +0.5, +0.5, +0.5,
+            -0.5, +0.5, +0.5,
+            -0.5, -0.5, +0.5,
+            +0.5, -0.5, +0.5,
+            
+            +0.5, +0.5, -0.5,
+            +0.5, +0.5, +0.5,
+            +0.5, -0.5, +0.5,
+            +0.5, -0.5, -0.5,
+            
+            -0.5, +0.5, -0.5,
+            +0.5, +0.5, -0.5,
+            +0.5, -0.5, -0.5,
+            -0.5, -0.5, -0.5,
+            
+            -0.5, +0.5, +0.5,
+            -0.5, +0.5, -0.5,
+            -0.5, -0.5, -0.5,
+            -0.5, -0.5, +0.5,
+            
+            +0.5, +0.5, -0.5,
+            -0.5, +0.5, -0.5,
+            -0.5, +0.5, +0.5,
+            +0.5, +0.5, +0.5,
+            
+            -0.5, -0.5, +0.5,
+            -0.5, -0.5, -0.5,
+            +0.5, -0.5, -0.5,
+            +0.5, -0.5, +0.5
+        };
+        
+        glPushMatrix();
+        glScaled(x, y, z);
+        translate(t);
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glVertexPointer(3, GL_DOUBLE, 0, vertices);
+        glDrawArrays(GL_QUADS, 0, 4 * 6);
+        glDisableClientState(GL_VERTEX_ARRAY);
+        glPopMatrix();
+    }
 }
 
 #endif /* draw_utils_hpp */
