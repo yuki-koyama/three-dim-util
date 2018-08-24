@@ -4,17 +4,13 @@
 #include <three-dim-util/camera.hpp>
 #include <Eigen/Core>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace threedimutil
 {
     inline Eigen::Matrix4d convert_matrix_type(const glm::mat4& mat)
     {
-        return (Eigen::Matrix4d() <<
-                mat[0][0], mat[1][0], mat[2][0], mat[3][0],
-                mat[0][1], mat[1][1], mat[2][1], mat[3][1],
-                mat[0][2], mat[1][2], mat[2][2], mat[3][2],
-                mat[0][3], mat[1][3], mat[2][3], mat[3][3]
-                ).finished();
+        return Eigen::Map<const Eigen::Matrix4f>(glm::value_ptr(mat)).cast<double>();
     }
     
     inline Eigen::Matrix4d make_perspective(double fov,
