@@ -41,41 +41,48 @@ namespace threedimutil
             draw_point(P.row(i), size);
         }
     }
-
+    
     inline void draw_points(const Eigen::MatrixXd& P, const Eigen::MatrixXd& C, double size = 12.0)
     {
-        assert(P.cols() == 3);
-        assert(C.cols() == 3);
-        for (int i = 0; i < P.rows(); ++ i)
-        {
-            color_3d(C.row(i));
-            draw_point(P.row(i), size);
-        }
+        assert(P.rows() == 3);
+        assert(C.rows() == 3);
+        assert(P.cols() == C.cols());
+        
+        const int num_points = P.cols();
+        
+        glPointSize(size);
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_COLOR_ARRAY);
+        glVertexPointer(3, GL_DOUBLE, 0, P.data());
+        glColorPointer(3, GL_DOUBLE, 0, C.data());
+        glDrawArrays(GL_POINTS, 0, num_points);
+        glDisableClientState(GL_VERTEX_ARRAY);
+        glDisableClientState(GL_COLOR_ARRAY);
     }
     
     inline void draw_edges(const Eigen::MatrixXd& P, const Eigen::MatrixXi& E)
     {
-        assert(P.cols() == 3);
-        assert(E.cols() == 2);
+        assert(P.rows() == 3);
+        assert(E.rows() == 2);
         glBegin(GL_LINES);
-        for (int i = 0; i < E.rows(); ++ i)
+        for (int i = 0; i < E.cols(); ++ i)
         {
-            vertex_3d(P.row(E(i, 0)));
-            vertex_3d(P.row(E(i, 1)));
+            vertex_3d(P.col(E(0, i)));
+            vertex_3d(P.col(E(1, i)));
         }
         glEnd();
     }
     
-    inline void draw_faces(const Eigen::MatrixXd& V, const Eigen::MatrixXi& F)
+    inline void draw_mesh(const Eigen::MatrixXd& V, const Eigen::MatrixXi& F)
     {
-        assert(V.cols() == 3);
-        assert(F.cols() == 3);
+        assert(V.rows() == 3);
+        assert(F.rows() == 3);
         glBegin(GL_TRIANGLES);
-        for (int i = 0; i < F.rows(); ++ i)
+        for (int i = 0; i < F.cols(); ++ i)
         {
-            vertex_3d(V.row(F(i, 0)));
-            vertex_3d(V.row(F(i, 1)));
-            vertex_3d(V.row(F(i, 2)));
+            vertex_3d(V.col(F(0, i)));
+            vertex_3d(V.col(F(1, i)));
+            vertex_3d(V.col(F(2, i)));
         }
         glEnd();
     }
