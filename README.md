@@ -18,6 +18,7 @@ A library of utility functions for prototyping OpenGL applications.
 
 ## Projects using three-dim-util
 
+- bvh11 <https://github.com/yuki-koyama/bvh11>
 - OptiMo <https://github.com/yuki-koyama/optimo>
 
 ## License
