@@ -2,12 +2,18 @@
 
 A library of utility functions for prototyping OpenGL applications.
 
-## Features
+## Target Users
 
-- Has APIs for Eigen matrix/vector representation
-- Has a template of Qt-based OpenGL widget with simple mouse interaction
-- Is NOT optimized for efficiency (if your application requires a high compute efficiency, do not use this library)
-- Relies on legacy OpenGL APIs
+The target of this library is users who ...
+
+- Use Qt for visualization and interaction
+  - This library provides a template of Qt-based OpenGL widget with simple mouse interaction.
+- Use Eigen for vector and matrix representation
+  - This library has APIs for Eigen matrix and vector representation.
+- Do not much care about compute efficiency
+  - This library is NOT optimized for efficiency and sometimes favors simplicity.
+- Do not care about using legacy OpenGL APIs
+  - This library relies on legacy OpenGL APIs that were declared deprecated.
 
 ## Dependencies
 
