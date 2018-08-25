@@ -1,6 +1,7 @@
 #include <three-dim-util/glut-wrapper.hpp>
 #include <three-dim-util/gl.hpp>
 #include <three-dim-util/gl-wrapper.hpp>
+#include <three-dim-util/draw-functions.hpp>
 #include <list>
 #include <Eigen/Geometry>
 
@@ -20,45 +21,6 @@ namespace threedimutil
     void drawSphere(double r, int res)
     {
         glutSolidSphere(r, res, res);
-    }
-    
-    void drawCylinder(double r, double h, int res, bool center)
-    {
-        drawCylinder(r, r, h, res, center);
-    }
-    
-    void drawCylinder(double r1, double r2, double h, int res, bool center)
-    {
-        glPushMatrix();
-        if (center) glTranslatef(0.0f, 0.0f, - static_cast<GLfloat>(h / 2.0));
-        GLUquadricObj* qobj = gluNewQuadric();
-        gluCylinder(qobj, r1, r2, h, res, 1);
-        glScalef(-1.0f, 1.0f, -1.0f);
-        gluDisk(qobj, 0.0, r1, res, 1);
-        glScalef(-1.0f, 1.0f, -1.0f);
-        glTranslatef(0.0f, 0.0f, static_cast<GLfloat>(h));
-        gluDisk(qobj, 0.0, r2, res, 1);
-        gluDeleteQuadric(qobj);
-        glPopMatrix();
-    }
-    
-    void drawCylinder(double r, const Vector3d& p1, const Vector3d& p2, int res)
-    {
-        Vector3d   t   = p2 - p1;
-        Vector3d   t0  = Vector3d(0.0, 0.0, 1.0);
-        double     c   = t.dot(t0) / t.norm();
-        double     q   = acos(c);
-        Vector3d   ax  = t0.cross(t).normalized();
-        double     h   = t.norm();
-        
-        Eigen::Affine3d rot(Eigen::AngleAxis<double>(q, ax));
-        if (fabs(c - 1.0) < 1e-16) rot = Matrix4d::Identity();
-        
-        glPushMatrix();
-        translate(p1);
-        glMultMatrixd(rot.data()); // rot.data() is column-major
-        drawCylinder(r, h, res, false);
-        glPopMatrix();
     }
     
     void drawFrame(double length, double width)
@@ -98,30 +60,13 @@ namespace threedimutil
         glPopMatrix();
     }
     
-    void drawCircle(double r)
-    {
-        const int res = 60;
-        GLUquadricObj* qobj = gluNewQuadric();
-        gluDisk(qobj, 0.0, r, res, 1);
-        gluDeleteQuadric(qobj);
-    }
-    
-    void drawCircle(double r, double trans_x, double trans_y)
-    {
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
-        glTranslated(trans_x, trans_y, 0.0);
-        drawCircle(r);
-        glPopMatrix();
-    }
-    
     void drawEllipse(double r_x, double r_y, double trans_x, double trans_y)
     {
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glTranslated(trans_x, trans_y, 0.0);
         glScaled(r_x, r_y, 1.0);
-        drawCircle(1.0);
+        draw_circle(1.0);
         glPopMatrix();
     }
 }

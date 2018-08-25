@@ -3,6 +3,7 @@
 
 #include <three-dim-util/gl-wrapper.hpp>
 #include <Eigen/Core>
+#include <Eigen/Geometry>
 
 namespace threedimutil
 {
@@ -173,6 +174,72 @@ namespace threedimutil
     inline void draw_cube(double size = 1.0)
     {
         draw_cube(Eigen::Vector3d::Zero(), size, size, size);
+    }
+    
+    inline void draw_circle(double radius, int resolution = 60)
+    {
+        Eigen::MatrixXd vertices(2, resolution);
+        for (int i = 0; i < resolution; ++ i)
+        {
+            constexpr double pi = M_PI;
+            const double theta = 2.0 * static_cast<double>(i) * pi / static_cast<double>(resolution);
+            vertices.col(i) = radius * Eigen::Vector2d(std::cos(theta), std::sin(theta));
+        }
+        
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glVertexPointer(2, GL_DOUBLE, 0, vertices.data());
+        glDrawArrays(GL_TRIANGLE_FAN, 0, resolution);
+        glDisableClientState(GL_VERTEX_ARRAY);
+    }
+    
+    inline void draw_cylinder(double radius, double height, int resolution = 60)
+    {
+        // Draw a cylinder
+        Eigen::MatrixXd vertices(3, resolution * 4);
+        for (int i = 0; i < resolution; ++ i)
+        {
+            constexpr double pi = M_PI;
+            const double theta_1 = 2.0 * static_cast<double>(i + 0) * pi / static_cast<double>(resolution);
+            const double theta_2 = 2.0 * static_cast<double>(i + 1) * pi / static_cast<double>(resolution);
+            
+            vertices.col(i * 4 + 0) = Eigen::Vector3d(radius * std::cos(theta_1), radius * std::sin(theta_1), 0.0);
+            vertices.col(i * 4 + 1) = Eigen::Vector3d(radius * std::cos(theta_2), radius * std::sin(theta_2), 0.0);
+            vertices.col(i * 4 + 2) = Eigen::Vector3d(radius * std::cos(theta_2), radius * std::sin(theta_2), height);
+            vertices.col(i * 4 + 3) = Eigen::Vector3d(radius * std::cos(theta_1), radius * std::sin(theta_1), height);
+        }
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glVertexPointer(3, GL_DOUBLE, 0, vertices.data());
+        glDrawArrays(GL_QUADS, 0, resolution * 4);
+        glDisableClientState(GL_VERTEX_ARRAY);
+        
+        // Draw circles at both ends
+        glPushMatrix();
+        glScaled(-1.0, 1.0, -1.0);
+        draw_circle(radius, resolution);
+        glScaled(-1.0, 1.0, -1.0);
+        glTranslated(0.0, 0.0, height);
+        draw_circle(radius, resolution);
+        glPopMatrix();
+    }
+    
+    inline void draw_cylinder(double radius, const Eigen::Vector3d& p1, const Eigen::Vector3d& p2, int resolution = 60)
+    {
+        const Eigen::Vector3d t   = p2 - p1;
+        const Eigen::Vector3d t0  = Eigen::Vector3d(0.0, 0.0, 1.0);
+        const double          c   = t.dot(t0) / t.norm();
+        const double          q   = std::acos(c);
+        const Eigen::Vector3d ax  = t0.cross(t).normalized();
+        const double          h   = t.norm();
+        const Eigen::Matrix4d rot = [&]()
+        {
+            return std::isnan(q) ? Eigen::Matrix4d::Identity() : Eigen::Affine3d(Eigen::AngleAxisd(q, ax)).matrix();
+        }();
+        
+        glPushMatrix();
+        translate(p1);
+        mult_matrix(rot);
+        draw_cylinder(radius, h, resolution);
+        glPopMatrix();
     }
 }
 
