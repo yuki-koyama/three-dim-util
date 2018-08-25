@@ -185,33 +185,52 @@ namespace threedimutil
             const double theta = 2.0 * static_cast<double>(i) * pi / static_cast<double>(resolution);
             vertices.col(i) = radius * Eigen::Vector2d(std::cos(theta), std::sin(theta));
         }
+        Eigen::MatrixXd normals = Eigen::MatrixXd::Zero(3, resolution);
+        normals.row(2) = Eigen::VectorXd::Ones(resolution);
         
         glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_NORMAL_ARRAY);
         glVertexPointer(2, GL_DOUBLE, 0, vertices.data());
+        glNormalPointer(GL_DOUBLE, 0, normals.data());
         glDrawArrays(GL_TRIANGLE_FAN, 0, resolution);
         glDisableClientState(GL_VERTEX_ARRAY);
+        glDisableClientState(GL_NORMAL_ARRAY);
     }
     
     inline void draw_cylinder(double radius, double height, int resolution = 30)
     {
         constexpr double pi = M_PI;
-
+        
         // Draw a cylinder
         Eigen::MatrixXd vertices(3, resolution * 4);
+        Eigen::MatrixXd normals(3, resolution * 4);
         for (int i = 0; i < resolution; ++ i)
         {
             const double theta_1 = 2.0 * static_cast<double>(i + 0) * pi / static_cast<double>(resolution);
             const double theta_2 = 2.0 * static_cast<double>(i + 1) * pi / static_cast<double>(resolution);
+            const double cos_1   = std::cos(theta_1);
+            const double cos_2   = std::cos(theta_2);
+            const double sin_1   = std::sin(theta_1);
+            const double sin_2   = std::sin(theta_2);
             
-            vertices.col(i * 4 + 0) = Eigen::Vector3d(radius * std::cos(theta_1), radius * std::sin(theta_1), 0.0);
-            vertices.col(i * 4 + 1) = Eigen::Vector3d(radius * std::cos(theta_2), radius * std::sin(theta_2), 0.0);
-            vertices.col(i * 4 + 2) = Eigen::Vector3d(radius * std::cos(theta_2), radius * std::sin(theta_2), height);
-            vertices.col(i * 4 + 3) = Eigen::Vector3d(radius * std::cos(theta_1), radius * std::sin(theta_1), height);
+            vertices.col(i * 4 + 0) = Eigen::Vector3d(radius * cos_1, radius * sin_1, 0.0);
+            vertices.col(i * 4 + 1) = Eigen::Vector3d(radius * cos_2, radius * sin_2, 0.0);
+            vertices.col(i * 4 + 2) = Eigen::Vector3d(radius * cos_2, radius * sin_2, height);
+            vertices.col(i * 4 + 3) = Eigen::Vector3d(radius * cos_1, radius * sin_1, height);
+            
+            normals.col(i * 4 + 0) = Eigen::Vector3d(cos_1, sin_1, 0.0);
+            normals.col(i * 4 + 1) = Eigen::Vector3d(cos_2, sin_2, 0.0);
+            normals.col(i * 4 + 2) = Eigen::Vector3d(cos_2, sin_2, 0.0);
+            normals.col(i * 4 + 3) = Eigen::Vector3d(cos_1, sin_1, 0.0);
         }
+        
         glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_NORMAL_ARRAY);
         glVertexPointer(3, GL_DOUBLE, 0, vertices.data());
+        glNormalPointer(GL_DOUBLE, 0, normals.data());
         glDrawArrays(GL_QUADS, 0, resolution * 4);
         glDisableClientState(GL_VERTEX_ARRAY);
+        glDisableClientState(GL_NORMAL_ARRAY);
         
         // Draw circles at both ends
         glPushMatrix();
@@ -246,8 +265,9 @@ namespace threedimutil
     inline void draw_sphere(double radius, int latitude_resolution = 10, int longitude_resolution = 20)
     {
         constexpr double pi = M_PI;
-
+        
         Eigen::MatrixXd vertices(3, latitude_resolution * longitude_resolution * 4);
+        Eigen::MatrixXd normals(3, latitude_resolution * longitude_resolution * 4);
         for (int i = 0; i < longitude_resolution; ++ i)
         {
             const double theta_xy_1 = 2.0 * static_cast<double>(i + 0) * pi / static_cast<double>(longitude_resolution);
@@ -266,16 +286,24 @@ namespace threedimutil
                 const double r_1 = radius * std::sin(theta_z_1);
                 const double r_2 = radius * std::sin(theta_z_2);
                 
-                vertices.col(i * latitude_resolution * 4 + j * 4 + 3) = Eigen::Vector3d(r_2 * x_1, r_2 * y_1, z_2);
-                vertices.col(i * latitude_resolution * 4 + j * 4 + 2) = Eigen::Vector3d(r_2 * x_2, r_2 * y_2, z_2);
-                vertices.col(i * latitude_resolution * 4 + j * 4 + 1) = Eigen::Vector3d(r_1 * x_2, r_1 * y_2, z_1);
-                vertices.col(i * latitude_resolution * 4 + j * 4 + 0) = Eigen::Vector3d(r_1 * x_1, r_1 * y_1, z_1);
+                vertices.col(i * latitude_resolution * 4 + j * 4 + 0) = Eigen::Vector3d(r_2 * x_1, r_2 * y_1, z_2);
+                vertices.col(i * latitude_resolution * 4 + j * 4 + 1) = Eigen::Vector3d(r_2 * x_2, r_2 * y_2, z_2);
+                vertices.col(i * latitude_resolution * 4 + j * 4 + 2) = Eigen::Vector3d(r_1 * x_2, r_1 * y_2, z_1);
+                vertices.col(i * latitude_resolution * 4 + j * 4 + 3) = Eigen::Vector3d(r_1 * x_1, r_1 * y_1, z_1);
+                
+                normals.col(i * latitude_resolution * 4 + j * 4 + 0) = Eigen::Vector3d(r_2 * x_1, r_2 * y_1, z_2).normalized();
+                normals.col(i * latitude_resolution * 4 + j * 4 + 1) = Eigen::Vector3d(r_2 * x_2, r_2 * y_2, z_2).normalized();
+                normals.col(i * latitude_resolution * 4 + j * 4 + 2) = Eigen::Vector3d(r_1 * x_2, r_1 * y_2, z_1).normalized();
+                normals.col(i * latitude_resolution * 4 + j * 4 + 3) = Eigen::Vector3d(r_1 * x_1, r_1 * y_1, z_1).normalized();
             }
         }
         glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_NORMAL_ARRAY);
         glVertexPointer(3, GL_DOUBLE, 0, vertices.data());
+        glNormalPointer(GL_DOUBLE, 0, normals.data());
         glDrawArrays(GL_QUADS, 0, latitude_resolution * longitude_resolution * 4);
         glDisableClientState(GL_VERTEX_ARRAY);
+        glDisableClientState(GL_NORMAL_ARRAY);
     }
     
     inline void draw_sphere(double radius, const Eigen::Vector3d& t, int latitude_resolution = 10, int longitude_resolution = 20)
