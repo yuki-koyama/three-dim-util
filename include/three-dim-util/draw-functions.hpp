@@ -313,6 +313,21 @@ namespace threedimutil
         draw_sphere(radius, latitude_resolution, longitude_resolution);
         glPopMatrix();
     }
+    
+    inline void draw_rectangle(const Eigen::Vector2d& t, double width, double height)
+    {
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        translate(t);
+        glBegin(GL_QUADS);
+        glNormal3d(0.0, 0.0, 1.0);
+        glVertex2d(+ 0.5 * width, + 0.5 * height);
+        glVertex2d(- 0.5 * width, + 0.5 * height);
+        glVertex2d(- 0.5 * width, - 0.5 * height);
+        glVertex2d(+ 0.5 * width, - 0.5 * height);
+        glEnd();
+        glPopMatrix();
+    }
 }
 
 #endif /* draw_utils_hpp */
