@@ -176,7 +176,7 @@ namespace threedimutil
         draw_cube(Eigen::Vector3d::Zero(), size, size, size);
     }
     
-    inline void draw_circle(double radius, int resolution = 60)
+    inline void draw_circle(double radius, int resolution = 30)
     {
         Eigen::MatrixXd vertices(2, resolution);
         for (int i = 0; i < resolution; ++ i)
@@ -192,13 +192,14 @@ namespace threedimutil
         glDisableClientState(GL_VERTEX_ARRAY);
     }
     
-    inline void draw_cylinder(double radius, double height, int resolution = 60)
+    inline void draw_cylinder(double radius, double height, int resolution = 30)
     {
+        constexpr double pi = M_PI;
+
         // Draw a cylinder
         Eigen::MatrixXd vertices(3, resolution * 4);
         for (int i = 0; i < resolution; ++ i)
         {
-            constexpr double pi = M_PI;
             const double theta_1 = 2.0 * static_cast<double>(i + 0) * pi / static_cast<double>(resolution);
             const double theta_2 = 2.0 * static_cast<double>(i + 1) * pi / static_cast<double>(resolution);
             
@@ -222,13 +223,13 @@ namespace threedimutil
         glPopMatrix();
     }
     
-    inline void draw_cylinder(double radius, const Eigen::Vector3d& p1, const Eigen::Vector3d& p2, int resolution = 60)
+    inline void draw_cylinder(double radius, const Eigen::Vector3d& p_1, const Eigen::Vector3d& p_2, int resolution = 30)
     {
-        const Eigen::Vector3d t   = p2 - p1;
-        const Eigen::Vector3d t0  = Eigen::Vector3d(0.0, 0.0, 1.0);
-        const double          c   = t.dot(t0) / t.norm();
+        const Eigen::Vector3d t   = p_2 - p_1;
+        const Eigen::Vector3d t_0 = Eigen::Vector3d(0.0, 0.0, 1.0);
+        const double          c   = t.dot(t_0) / t.norm();
         const double          q   = std::acos(c);
-        const Eigen::Vector3d ax  = t0.cross(t).normalized();
+        const Eigen::Vector3d ax  = t_0.cross(t).normalized();
         const double          h   = t.norm();
         const Eigen::Matrix4d rot = [&]()
         {
@@ -236,9 +237,52 @@ namespace threedimutil
         }();
         
         glPushMatrix();
-        translate(p1);
+        translate(p_1);
         mult_matrix(rot);
         draw_cylinder(radius, h, resolution);
+        glPopMatrix();
+    }
+    
+    inline void draw_sphere(double radius, int latitude_resolution = 10, int longitude_resolution = 20)
+    {
+        constexpr double pi = M_PI;
+
+        Eigen::MatrixXd vertices(3, latitude_resolution * longitude_resolution * 4);
+        for (int i = 0; i < longitude_resolution; ++ i)
+        {
+            const double theta_xy_1 = 2.0 * static_cast<double>(i + 0) * pi / static_cast<double>(longitude_resolution);
+            const double theta_xy_2 = 2.0 * static_cast<double>(i + 1) * pi / static_cast<double>(longitude_resolution);
+            const double x_1        = std::cos(theta_xy_1);
+            const double x_2        = std::cos(theta_xy_2);
+            const double y_1        = std::sin(theta_xy_1);
+            const double y_2        = std::sin(theta_xy_2);
+            
+            for (int j = 0; j < latitude_resolution; ++ j)
+            {
+                const double theta_z_1 = static_cast<double>(j + 0) * pi / static_cast<double>(latitude_resolution);
+                const double theta_z_2 = static_cast<double>(j + 1) * pi / static_cast<double>(latitude_resolution);
+                const double z_1 = radius * std::cos(theta_z_1);
+                const double z_2 = radius * std::cos(theta_z_2);
+                const double r_1 = radius * std::sin(theta_z_1);
+                const double r_2 = radius * std::sin(theta_z_2);
+                
+                vertices.col(i * latitude_resolution * 4 + j * 4 + 3) = Eigen::Vector3d(r_2 * x_1, r_2 * y_1, z_2);
+                vertices.col(i * latitude_resolution * 4 + j * 4 + 2) = Eigen::Vector3d(r_2 * x_2, r_2 * y_2, z_2);
+                vertices.col(i * latitude_resolution * 4 + j * 4 + 1) = Eigen::Vector3d(r_1 * x_2, r_1 * y_2, z_1);
+                vertices.col(i * latitude_resolution * 4 + j * 4 + 0) = Eigen::Vector3d(r_1 * x_1, r_1 * y_1, z_1);
+            }
+        }
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glVertexPointer(3, GL_DOUBLE, 0, vertices.data());
+        glDrawArrays(GL_QUADS, 0, latitude_resolution * longitude_resolution * 4);
+        glDisableClientState(GL_VERTEX_ARRAY);
+    }
+    
+    inline void draw_sphere(double radius, const Eigen::Vector3d& t, int latitude_resolution = 10, int longitude_resolution = 20)
+    {
+        glPushMatrix();
+        translate(t);
+        draw_sphere(radius, latitude_resolution, longitude_resolution);
         glPopMatrix();
     }
 }

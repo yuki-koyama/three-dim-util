@@ -10,19 +10,6 @@ namespace threedimutil
     using Eigen::Vector3d;
     using Eigen::Matrix4d;
         
-    void drawSphere(double r, const Vector3d& p, int res)
-    {
-        glPushMatrix();
-        translate(p);
-        drawSphere(r, res);
-        glPopMatrix();
-    }
-    
-    void drawSphere(double r, int res)
-    {
-        glutSolidSphere(r, res, res);
-    }
-    
     void drawFrame(double length, double width)
     {
         const double l = length;
