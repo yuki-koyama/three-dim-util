@@ -12,7 +12,6 @@ A library of utility functions for prototyping OpenGL applications.
 ## Dependencies
 
 - OpenGL
-- GLUT
 - Eigen <http://eigen.tuxfamily.org/>
 - Qt <https://www.qt.io/>
 - glm <https://glm.g-truc.net/>
