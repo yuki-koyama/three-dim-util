@@ -281,22 +281,20 @@ namespace threedimutil
             {
                 const double theta_z_1 = static_cast<double>(j + 0) * pi / static_cast<double>(latitude_resolution);
                 const double theta_z_2 = static_cast<double>(j + 1) * pi / static_cast<double>(latitude_resolution);
-                const double z_1 = radius * std::cos(theta_z_1);
-                const double z_2 = radius * std::cos(theta_z_2);
-                const double r_1 = radius * std::sin(theta_z_1);
-                const double r_2 = radius * std::sin(theta_z_2);
+                const double cos_1 = std::cos(theta_z_1);
+                const double cos_2 = std::cos(theta_z_2);
+                const double sin_1 = std::sin(theta_z_1);
+                const double sin_2 = std::sin(theta_z_2);
                 
-                vertices.col(i * latitude_resolution * 4 + j * 4 + 0) = Eigen::Vector3d(r_2 * x_1, r_2 * y_1, z_2);
-                vertices.col(i * latitude_resolution * 4 + j * 4 + 1) = Eigen::Vector3d(r_2 * x_2, r_2 * y_2, z_2);
-                vertices.col(i * latitude_resolution * 4 + j * 4 + 2) = Eigen::Vector3d(r_1 * x_2, r_1 * y_2, z_1);
-                vertices.col(i * latitude_resolution * 4 + j * 4 + 3) = Eigen::Vector3d(r_1 * x_1, r_1 * y_1, z_1);
-                
-                normals.col(i * latitude_resolution * 4 + j * 4 + 0) = Eigen::Vector3d(r_2 * x_1, r_2 * y_1, z_2).normalized();
-                normals.col(i * latitude_resolution * 4 + j * 4 + 1) = Eigen::Vector3d(r_2 * x_2, r_2 * y_2, z_2).normalized();
-                normals.col(i * latitude_resolution * 4 + j * 4 + 2) = Eigen::Vector3d(r_1 * x_2, r_1 * y_2, z_1).normalized();
-                normals.col(i * latitude_resolution * 4 + j * 4 + 3) = Eigen::Vector3d(r_1 * x_1, r_1 * y_1, z_1).normalized();
+                vertices.col(i * latitude_resolution * 4 + j * 4 + 0) = Eigen::Vector3d(sin_2 * x_1, sin_2 * y_1, cos_2);
+                vertices.col(i * latitude_resolution * 4 + j * 4 + 1) = Eigen::Vector3d(sin_2 * x_2, sin_2 * y_2, cos_2);
+                vertices.col(i * latitude_resolution * 4 + j * 4 + 2) = Eigen::Vector3d(sin_1 * x_2, sin_1 * y_2, cos_1);
+                vertices.col(i * latitude_resolution * 4 + j * 4 + 3) = Eigen::Vector3d(sin_1 * x_1, sin_1 * y_1, cos_1);
             }
         }
+        normals  = vertices;
+        vertices = radius * vertices;
+        
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_NORMAL_ARRAY);
         glVertexPointer(3, GL_DOUBLE, 0, vertices.data());
