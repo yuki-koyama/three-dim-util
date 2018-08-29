@@ -2,6 +2,7 @@
 #define draw_utils_hpp
 
 #include <three-dim-util/gl-wrapper.hpp>
+#include <three-dim-util/sphere.hpp>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
@@ -265,54 +266,26 @@ namespace threedimutil
         glPopMatrix();
     }
     
-    inline void draw_sphere(double radius, int latitude_resolution = 10, int longitude_resolution = 20)
+    inline void draw_sphere(double radius)
     {
-        constexpr double pi = M_PI;
+        const GLboolean is_gl_normalize_enabled = glIsEnabled(GL_NORMALIZE);
         
-        Eigen::MatrixXd vertices(3, latitude_resolution * longitude_resolution * 4);
-        Eigen::MatrixXd normals(3, latitude_resolution * longitude_resolution * 4);
-        for (int i = 0; i < longitude_resolution; ++ i)
-        {
-            const double theta_xy_1 = 2.0 * static_cast<double>(i + 0) * pi / static_cast<double>(longitude_resolution);
-            const double theta_xy_2 = 2.0 * static_cast<double>(i + 1) * pi / static_cast<double>(longitude_resolution);
-            const double x_1        = std::cos(theta_xy_1);
-            const double x_2        = std::cos(theta_xy_2);
-            const double y_1        = std::sin(theta_xy_1);
-            const double y_2        = std::sin(theta_xy_2);
-            
-            for (int j = 0; j < latitude_resolution; ++ j)
-            {
-                const double theta_z_1 = static_cast<double>(j + 0) * pi / static_cast<double>(latitude_resolution);
-                const double theta_z_2 = static_cast<double>(j + 1) * pi / static_cast<double>(latitude_resolution);
-                const double cos_1 = std::cos(theta_z_1);
-                const double cos_2 = std::cos(theta_z_2);
-                const double sin_1 = std::sin(theta_z_1);
-                const double sin_2 = std::sin(theta_z_2);
-                
-                vertices.col(i * latitude_resolution * 4 + j * 4 + 0) = Eigen::Vector3d(sin_2 * x_1, sin_2 * y_1, cos_2);
-                vertices.col(i * latitude_resolution * 4 + j * 4 + 1) = Eigen::Vector3d(sin_2 * x_2, sin_2 * y_2, cos_2);
-                vertices.col(i * latitude_resolution * 4 + j * 4 + 2) = Eigen::Vector3d(sin_1 * x_2, sin_1 * y_2, cos_1);
-                vertices.col(i * latitude_resolution * 4 + j * 4 + 3) = Eigen::Vector3d(sin_1 * x_1, sin_1 * y_1, cos_1);
-            }
-        }
-        normals  = vertices;
-        vertices = radius * vertices;
+        glEnable(GL_NORMALIZE);
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glScaled(radius, radius, radius);
+        Sphere::Draw();
+        glPopMatrix();
         
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glEnableClientState(GL_NORMAL_ARRAY);
-        glVertexPointer(3, GL_DOUBLE, 0, vertices.data());
-        glNormalPointer(GL_DOUBLE, 0, normals.data());
-        glDrawArrays(GL_QUADS, 0, latitude_resolution * longitude_resolution * 4);
-        glDisableClientState(GL_VERTEX_ARRAY);
-        glDisableClientState(GL_NORMAL_ARRAY);
+        if (!is_gl_normalize_enabled) { glDisable(GL_NORMALIZE); }
     }
     
-    inline void draw_sphere(double radius, const Eigen::Vector3d& t, int latitude_resolution = 10, int longitude_resolution = 20)
+    inline void draw_sphere(double radius, const Eigen::Vector3d& t)
     {
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         translate(t);
-        draw_sphere(radius, latitude_resolution, longitude_resolution);
+        draw_sphere(radius);
         glPopMatrix();
     }
     
