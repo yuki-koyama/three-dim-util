@@ -156,6 +156,7 @@ namespace threedimutil
         const GLboolean is_gl_normalize_enabled = glIsEnabled(GL_NORMALIZE);
         
         glEnable(GL_NORMALIZE);
+        glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glScaled(x, y, z);
         translate(t);
@@ -233,6 +234,7 @@ namespace threedimutil
         glDisableClientState(GL_NORMAL_ARRAY);
         
         // Draw circles at both ends
+        glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glScaled(-1.0, 1.0, -1.0);
         draw_circle(radius, resolution);
@@ -255,6 +257,7 @@ namespace threedimutil
             return std::isnan(q) ? Eigen::Matrix4d::Identity() : Eigen::Affine3d(Eigen::AngleAxisd(q, ax)).matrix();
         }();
         
+        glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         translate(p_1);
         mult_matrix(rot);
@@ -306,6 +309,7 @@ namespace threedimutil
     
     inline void draw_sphere(double radius, const Eigen::Vector3d& t, int latitude_resolution = 10, int longitude_resolution = 20)
     {
+        glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         translate(t);
         draw_sphere(radius, latitude_resolution, longitude_resolution);
