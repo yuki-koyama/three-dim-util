@@ -155,7 +155,6 @@ namespace threedimutil
         };
         
         const GLboolean is_gl_normalize_enabled = glIsEnabled(GL_NORMALIZE);
-        
         glEnable(GL_NORMALIZE);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
@@ -169,7 +168,6 @@ namespace threedimutil
         glDisableClientState(GL_VERTEX_ARRAY);
         glDisableClientState(GL_NORMAL_ARRAY);
         glPopMatrix();
-        
         if (!is_gl_normalize_enabled) { glDisable(GL_NORMALIZE); }
     }
     
@@ -203,29 +201,43 @@ namespace threedimutil
     {
         constexpr double pi = M_PI;
         
-        // Draw a cylinder
-        Eigen::MatrixXd vertices(3, resolution * 4);
-        Eigen::MatrixXd normals(3, resolution * 4);
-        for (int i = 0; i < resolution; ++ i)
+        static Eigen::MatrixXd vertices;
+        static Eigen::MatrixXd normals;
+        
+        // Create the vertex data if this is the first draw call or the resolution is specified differently from the last time
+        if (vertices.cols() != resolution * 4)
         {
-            const double theta_1 = 2.0 * static_cast<double>(i + 0) * pi / static_cast<double>(resolution);
-            const double theta_2 = 2.0 * static_cast<double>(i + 1) * pi / static_cast<double>(resolution);
-            const double cos_1   = std::cos(theta_1);
-            const double cos_2   = std::cos(theta_2);
-            const double sin_1   = std::sin(theta_1);
-            const double sin_2   = std::sin(theta_2);
+            vertices.resize(3, resolution * 4);
+            normals.resize(3, resolution * 4);
             
-            vertices.col(i * 4 + 0) = Eigen::Vector3d(radius * cos_1, radius * sin_1, 0.0);
-            vertices.col(i * 4 + 1) = Eigen::Vector3d(radius * cos_2, radius * sin_2, 0.0);
-            vertices.col(i * 4 + 2) = Eigen::Vector3d(radius * cos_2, radius * sin_2, height);
-            vertices.col(i * 4 + 3) = Eigen::Vector3d(radius * cos_1, radius * sin_1, height);
-            
-            normals.col(i * 4 + 0) = Eigen::Vector3d(cos_1, sin_1, 0.0);
-            normals.col(i * 4 + 1) = Eigen::Vector3d(cos_2, sin_2, 0.0);
-            normals.col(i * 4 + 2) = Eigen::Vector3d(cos_2, sin_2, 0.0);
-            normals.col(i * 4 + 3) = Eigen::Vector3d(cos_1, sin_1, 0.0);
+            for (int i = 0; i < resolution; ++ i)
+            {
+                const double theta_1 = 2.0 * static_cast<double>(i + 0) * pi / static_cast<double>(resolution);
+                const double theta_2 = 2.0 * static_cast<double>(i + 1) * pi / static_cast<double>(resolution);
+                const double cos_1   = std::cos(theta_1);
+                const double cos_2   = std::cos(theta_2);
+                const double sin_1   = std::sin(theta_1);
+                const double sin_2   = std::sin(theta_2);
+                
+                vertices.col(i * 4 + 0) = Eigen::Vector3d(cos_1, sin_1, 0.0);
+                vertices.col(i * 4 + 1) = Eigen::Vector3d(cos_2, sin_2, 0.0);
+                vertices.col(i * 4 + 2) = Eigen::Vector3d(cos_2, sin_2, 1.0);
+                vertices.col(i * 4 + 3) = Eigen::Vector3d(cos_1, sin_1, 1.0);
+                
+                normals.col(i * 4 + 0) = Eigen::Vector3d(cos_1, sin_1, 0.0);
+                normals.col(i * 4 + 1) = Eigen::Vector3d(cos_2, sin_2, 0.0);
+                normals.col(i * 4 + 2) = Eigen::Vector3d(cos_2, sin_2, 0.0);
+                normals.col(i * 4 + 3) = Eigen::Vector3d(cos_1, sin_1, 0.0);
+            }
         }
         
+        glMatrixMode(GL_MODELVIEW);
+        
+        // Draw a cylinder
+        const GLboolean is_gl_normalize_enabled = glIsEnabled(GL_NORMALIZE);
+        glEnable(GL_NORMALIZE);
+        glPushMatrix();
+        glScaled(radius, radius, height);
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_NORMAL_ARRAY);
         glVertexPointer(3, GL_DOUBLE, 0, vertices.data());
@@ -233,9 +245,10 @@ namespace threedimutil
         glDrawArrays(GL_QUADS, 0, resolution * 4);
         glDisableClientState(GL_VERTEX_ARRAY);
         glDisableClientState(GL_NORMAL_ARRAY);
+        glPopMatrix();
+        if (!is_gl_normalize_enabled) { glDisable(GL_NORMALIZE); }
         
         // Draw circles at both ends
-        glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glScaled(-1.0, 1.0, -1.0);
         draw_circle(radius, resolution);
@@ -269,14 +282,12 @@ namespace threedimutil
     inline void draw_sphere(double radius)
     {
         const GLboolean is_gl_normalize_enabled = glIsEnabled(GL_NORMALIZE);
-        
         glEnable(GL_NORMALIZE);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glScaled(radius, radius, radius);
         Sphere::Draw();
         glPopMatrix();
-        
         if (!is_gl_normalize_enabled) { glDisable(GL_NORMALIZE); }
     }
     
