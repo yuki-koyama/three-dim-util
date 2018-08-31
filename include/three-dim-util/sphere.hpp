@@ -56,12 +56,14 @@ namespace threedimutil
                     const double sin_1 = std::sin(theta_z_1);
                     const double sin_2 = std::sin(theta_z_2);
                     
-                    vertices_.col(i * latitude_resolution_ * 6 + j * 6 + 0) = Eigen::Vector3d(sin_2 * x_1, sin_2 * y_1, cos_2);
-                    vertices_.col(i * latitude_resolution_ * 6 + j * 6 + 1) = Eigen::Vector3d(sin_2 * x_2, sin_2 * y_2, cos_2);
-                    vertices_.col(i * latitude_resolution_ * 6 + j * 6 + 2) = Eigen::Vector3d(sin_1 * x_2, sin_1 * y_2, cos_1);
-                    vertices_.col(i * latitude_resolution_ * 6 + j * 6 + 3) = Eigen::Vector3d(sin_2 * x_1, sin_2 * y_1, cos_2);
-                    vertices_.col(i * latitude_resolution_ * 6 + j * 6 + 4) = Eigen::Vector3d(sin_1 * x_2, sin_1 * y_2, cos_1);
-                    vertices_.col(i * latitude_resolution_ * 6 + j * 6 + 5) = Eigen::Vector3d(sin_1 * x_1, sin_1 * y_1, cos_1);
+                    const int offset = i * latitude_resolution_ * 6 + j * 6;
+                    
+                    vertices_.col(offset + 0) = Eigen::Vector3d(sin_2 * x_1, sin_2 * y_1, cos_2);
+                    vertices_.col(offset + 1) = Eigen::Vector3d(sin_2 * x_2, sin_2 * y_2, cos_2);
+                    vertices_.col(offset + 2) = Eigen::Vector3d(sin_1 * x_2, sin_1 * y_2, cos_1);
+                    vertices_.col(offset + 3) = Eigen::Vector3d(sin_2 * x_1, sin_2 * y_1, cos_2);
+                    vertices_.col(offset + 4) = Eigen::Vector3d(sin_1 * x_2, sin_1 * y_2, cos_1);
+                    vertices_.col(offset + 5) = Eigen::Vector3d(sin_1 * x_1, sin_1 * y_1, cos_1);
                 }
             }
             normals_ = vertices_;
