@@ -25,14 +25,14 @@ include_directories(${GLM_INCLUDE_DIRS})
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
-file(GLOB headers ${CMAKE_CURRENT_SOURCE_DIR}/include/three-dim-util/*.hpp)
-file(GLOB sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp)
+file(GLOB headers ${CMAKE_CURRENT_SOURCE_DIR}/include/three-dim-util/*.hpp ${CMAKE_CURRENT_SOURCE_DIR}/include/three-dim-util/primitives/*.hpp)
+file(GLOB sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 
 add_library(three-dim-util STATIC ${headers} ${sources})
 target_link_libraries(three-dim-util ${OPENGL_LIBRARIES} Qt5::Gui Qt5::Widgets glm)
 target_include_directories(three-dim-util PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/three-dim-util)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ DESTINATION include FILES_MATCHING PATTERN "*.h*")
 install(TARGETS three-dim-util ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
 option(THREEDIMUTIL_BUILD_DEMOS "Build demos" OFF)

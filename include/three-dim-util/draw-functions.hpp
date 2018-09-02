@@ -2,8 +2,8 @@
 #define draw_utils_hpp
 
 #include <three-dim-util/gl-wrapper.hpp>
-#include <three-dim-util/cube.hpp>
-#include <three-dim-util/sphere.hpp>
+#include <three-dim-util/primitives/cube.hpp>
+#include <three-dim-util/primitives/sphere.hpp>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
