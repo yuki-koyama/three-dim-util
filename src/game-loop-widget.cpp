@@ -59,7 +59,6 @@ namespace threedimutil
         const int y_dev = devicePixelRatio() * event->y();
         
         camera_.BeginTrackball(x_dev, y_dev, threedimutil::Camera::Mode::Rotate);
-        update();
     }
     
     void GameLoopWidget::mouseMoveEvent(QMouseEvent* event)
@@ -68,13 +67,11 @@ namespace threedimutil
         const int y_dev = devicePixelRatio() * event->y();
         
         camera_.MoveTrackball(x_dev, y_dev);
-        update();
     }
     
     void GameLoopWidget::mouseReleaseEvent(QMouseEvent*)
     {
         camera_.EndTrackball();
-        update();
     }
     
     void GameLoopWidget::wheelEvent(QWheelEvent* event)
@@ -82,7 +79,6 @@ namespace threedimutil
         camera_.BeginTrackball(0, 0, threedimutil::Camera::Mode::Zoom);
         camera_.MoveTrackball (0, event->delta());
         camera_.EndTrackball  ();
-        update();
     }
     
     void GameLoopWidget::setProjectionMatrix()
