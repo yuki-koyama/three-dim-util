@@ -6,6 +6,8 @@
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 
+class QTimer;
+
 namespace threedimutil
 {
     class GameLoopWidget : public QOpenGLWidget, protected QOpenGLFunctions
@@ -26,6 +28,10 @@ namespace threedimutil
         double near_clip() const { return near_clip_; }
         double& far_clip() { return far_clip_; }
         double far_clip() const { return far_clip_; }
+        
+        void startTimer();
+        void stopTimer();
+        bool isTimerActive() const;
         
     protected:
         void initializeGL();
@@ -49,6 +55,8 @@ namespace threedimutil
         threedimutil::Camera camera_;
         double near_clip_ = 0.05;
         double far_clip_  = 20.0;
+        
+        std::shared_ptr<QTimer> timer_;
     };
 }
 

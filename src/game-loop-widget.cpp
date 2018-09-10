@@ -2,9 +2,11 @@
 #include <three-dim-util/gl-wrapper.hpp>
 #include <three-dim-util/matrix.hpp>
 #include <sstream>
+#include <memory>
 #include <iomanip>
 #include <QMouseEvent>
 #include <QString>
+#include <QTimer>
 
 namespace threedimutil
 {
@@ -13,6 +15,24 @@ namespace threedimutil
         QSurfaceFormat format = QSurfaceFormat::defaultFormat();
         format.setSamples(num_samples_);
         this->setFormat(format);
+        
+        timer_ = std::make_shared<QTimer>(this);
+        connect(timer_.get(), SIGNAL(timeout()), this, SLOT(update()));
+    }
+    
+    void GameLoopWidget::startTimer()
+    {
+        timer_->start();
+    }
+    
+    void GameLoopWidget::stopTimer()
+    {
+        timer_->stop();
+    }
+    
+    bool GameLoopWidget::isTimerActive() const
+    {
+        return timer_->isActive();
     }
     
     void GameLoopWidget::initializeGL()
