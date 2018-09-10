@@ -93,8 +93,8 @@ namespace threedimutil
         glEnable(GL_NORMALIZE);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
-        glScaled(x, y, z);
         translate(t);
+        glScaled(x, y, z);
         Cube::Draw();
         glPopMatrix();
         if (!is_gl_normalize_enabled) { glDisable(GL_NORMALIZE); }
