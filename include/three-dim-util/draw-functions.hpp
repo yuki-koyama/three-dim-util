@@ -190,7 +190,7 @@ namespace threedimutil
     inline void draw_cylinder(double radius, const Eigen::Vector3d& p_1, const Eigen::Vector3d& p_2, int resolution = 30)
     {
         const Eigen::Vector3d t   = p_2 - p_1;
-        const Eigen::Vector3d t_0 = Eigen::Vector3d(0.0, 0.0, 1.0);
+        const Eigen::Vector3d t_0 = Eigen::Vector3d::UnitZ();
         const double          c   = t.dot(t_0) / t.norm();
         const double          q   = std::acos(c);
         const Eigen::Vector3d ax  = t_0.cross(t).normalized();
