@@ -21,8 +21,8 @@ namespace threedimutil
         
         double& near_clip()       { return near_clip_; }
         double  near_clip() const { return near_clip_; }
-        double& far_clip()        { return far_clip_;  }
-        double  far_clip()  const { return far_clip_;  }
+        double& far_clip ()       { return far_clip_;  }
+        double  far_clip () const { return far_clip_;  }
         
     protected:
         void initializeGL();
