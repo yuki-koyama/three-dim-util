@@ -8,29 +8,8 @@
 
 namespace threedimutil
 {
-    TrackballWidget::TrackballWidget(QWidget *parent) : QOpenGLWidget(parent)
+    TrackballWidget::TrackballWidget(QWidget *parent) : AbstractWidget(parent)
     {
-        QSurfaceFormat format = QSurfaceFormat::defaultFormat();
-        format.setSamples(num_samples_);
-        this->setFormat(format);
-    }
-    
-    void TrackballWidget::initializeGL()
-    {
-        initializeOpenGLFunctions();
-        threedimutil::clear_color_3d(background_color_);
-        
-        glEnable(GL_LINE_SMOOTH);
-        glEnable(GL_POLYGON_SMOOTH);
-        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-        glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
-        
-        glEnable(GL_DEPTH_TEST);
-    }
-    
-    void TrackballWidget::resizeGL(int w, int h)
-    {
-        glViewport(0, 0, w, h);
     }
     
     void TrackballWidget::mousePressEvent(QMouseEvent* event)
@@ -38,7 +17,7 @@ namespace threedimutil
         const int x_dev = devicePixelRatio() * event->x();
         const int y_dev = devicePixelRatio() * event->y();
         
-        camera_.BeginTrackball(x_dev, y_dev, threedimutil::Camera::Mode::Rotate);
+        camera().BeginTrackball(x_dev, y_dev, threedimutil::Camera::Mode::Rotate);
         update();
     }
     
@@ -47,21 +26,21 @@ namespace threedimutil
         const int x_dev = devicePixelRatio() * event->x();
         const int y_dev = devicePixelRatio() * event->y();
         
-        camera_.MoveTrackball(x_dev, y_dev);
+        camera().MoveTrackball(x_dev, y_dev);
         update();
     }
     
     void TrackballWidget::mouseReleaseEvent(QMouseEvent*)
     {
-        camera_.EndTrackball();
+        camera().EndTrackball();
         update();
     }
     
     void TrackballWidget::wheelEvent(QWheelEvent* event)
     {
-        camera_.BeginTrackball(0, 0, threedimutil::Camera::Mode::Zoom);
-        camera_.MoveTrackball (0, event->delta());
-        camera_.EndTrackball  ();
+        camera().BeginTrackball(0, 0, threedimutil::Camera::Mode::Zoom);
+        camera().MoveTrackball (0, event->delta());
+        camera().EndTrackball  ();
         update();
     }
     
@@ -70,19 +49,14 @@ namespace threedimutil
         const double aspect = static_cast<double>(width()) / static_cast<double>(height());
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        threedimutil::mult_matrix(threedimutil::make_perspective(camera_.vertical_angle_of_view(), aspect, near_clip_, far_clip_));
+        threedimutil::mult_matrix(threedimutil::make_perspective(camera().vertical_angle_of_view(), aspect, near_clip(), far_clip()));
     }
     
     void TrackballWidget::setModelViewMatrix()
     {
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        threedimutil::mult_matrix(threedimutil::make_look_at(camera_));
-    }
-    
-    void TrackballWidget::saveImage(const std::string& output_file_path)
-    {
-        grab().save(QString::fromStdString(output_file_path));
+        threedimutil::mult_matrix(threedimutil::make_look_at(camera()));
     }
     
     void TrackballWidget::saveImageSequence(const std::string &output_directory_path,
@@ -102,7 +76,7 @@ namespace threedimutil
                 return sout.str();
             }();
             saveImage(output_directory_path + "/" + prefix + num + ".png");
-            camera_.RotateAroundTarget(theta);
+            camera().RotateAroundTarget(theta);
         }
     }
 }
