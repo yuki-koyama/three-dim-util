@@ -31,8 +31,8 @@ namespace threedimutil
         void initializeGL();
         void resizeGL(int w, int h);
         
-        // This method is intended to be overridden in user-defined classes
-        void paintGL() {}
+        // This method should be overridden in user-defined classes
+        virtual void paintGL() = 0;
         
         void mousePressEvent(QMouseEvent* event);
         void mouseMoveEvent(QMouseEvent* event);
