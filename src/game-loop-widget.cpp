@@ -1,9 +1,7 @@
 #include <three-dim-util/game-loop-widget.hpp>
 #include <three-dim-util/gl-wrapper.hpp>
 #include <three-dim-util/matrix.hpp>
-#include <sstream>
 #include <memory>
-#include <iomanip>
 #include <QMouseEvent>
 #include <QString>
 #include <QTimer>
@@ -15,6 +13,8 @@ namespace threedimutil
         QSurfaceFormat format = QSurfaceFormat::defaultFormat();
         format.setSamples(num_samples_);
         this->setFormat(format);
+        
+        time_point_ = std::chrono::steady_clock::now();
         
         timer_ = std::make_shared<QTimer>(this);
         connect(timer_.get(), SIGNAL(timeout()), this, SLOT(update()));
@@ -33,6 +33,11 @@ namespace threedimutil
     bool GameLoopWidget::isTimerActive() const
     {
         return timer_->isActive();
+    }
+    
+    void GameLoopWidget::update()
+    {
+        QOpenGLWidget::update();
     }
     
     void GameLoopWidget::initializeGL()
@@ -100,29 +105,16 @@ namespace threedimutil
         threedimutil::mult_matrix(threedimutil::make_look_at(camera_));
     }
     
+    long GameLoopWidget::getElapsedTimeInMilliseconds() const
+    {
+        const auto current_time_point = std::chrono::steady_clock::now();
+        const auto elapsed_duration   = std::chrono::duration_cast<std::chrono::milliseconds>(current_time_point - time_point_);
+        
+        return elapsed_duration.count();
+    }
+    
     void GameLoopWidget::saveImage(const std::string& output_file_path)
     {
         grab().save(QString::fromStdString(output_file_path));
-    }
-    
-    void GameLoopWidget::saveImageSequence(const std::string &output_directory_path,
-                                            const std::string &prefix,
-                                            int num_digits)
-    {
-        assert(num_digits >= 2);
-        constexpr int    num_frames = 300;
-        constexpr int    times      = 2;
-        constexpr double theta      = static_cast<double>(times) * 2.0 * M_PI / static_cast<double>(num_frames);
-        for (int i = 0; i < num_frames; ++ i)
-        {
-            const std::string num = [&]()
-            {
-                std::ostringstream sout;
-                sout << std::setfill('0') << std::setw(num_digits) << i;
-                return sout.str();
-            }();
-            saveImage(output_directory_path + "/" + prefix + num + ".png");
-            camera_.RotateAroundTarget(theta);
-        }
-    }
+    }    
 }

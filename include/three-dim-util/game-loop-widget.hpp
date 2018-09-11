@@ -3,6 +3,7 @@
 
 #include <three-dim-util/camera.hpp>
 #include <string>
+#include <chrono>
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 
@@ -17,9 +18,6 @@ namespace threedimutil
         explicit GameLoopWidget(QWidget *parent = nullptr);
         
         void saveImage(const std::string& output_file_path);
-        void saveImageSequence(const std::string& output_directory_path,
-                               const std::string& prefix,
-                               int num_digits = 6);
         
         threedimutil::Camera& camera() { return camera_; }
         const threedimutil::Camera& camera() const { return camera_; }
@@ -48,6 +46,10 @@ namespace threedimutil
         void setProjectionMatrix();
         void setModelViewMatrix();
         
+    protected slots:
+        virtual void update();
+        long getElapsedTimeInMilliseconds() const;
+
     private:
         const int num_samples_ = 8;
         const Eigen::Vector3d background_color_ { 0.9, 0.9, 0.9 };
@@ -57,6 +59,8 @@ namespace threedimutil
         double far_clip_  = 20.0;
         
         std::shared_ptr<QTimer> timer_;
+        
+        std::chrono::steady_clock::time_point time_point_;
     };
 }
 
