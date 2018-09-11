@@ -1,4 +1,4 @@
-#include <three-dim-util/game-loop-widget.hpp>
+#include <three-dim-util/widgets/game-loop-widget.hpp>
 #include <three-dim-util/gl-wrapper.hpp>
 #include <three-dim-util/matrix.hpp>
 #include <memory>

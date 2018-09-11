@@ -1,4 +1,4 @@
-#include <three-dim-util/trackball-widget.hpp>
+#include <three-dim-util/widgets/trackball-widget.hpp>
 #include <three-dim-util/draw-functions.hpp>
 #include <Eigen/Core>
 #include <QApplication>
