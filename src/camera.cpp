@@ -30,8 +30,8 @@ namespace threedimutil
     
     void Camera::MoveTrackball(int x, int y)
     {
-        const double scale_x = 2000.0;
-        const double scale_y = 2000.0;
+        constexpr double scale_x = 2000.0;
+        constexpr double scale_y = 2000.0;
         
         switch (mode_)
         {
@@ -39,15 +39,13 @@ namespace threedimutil
                 break;
             case Mode::Pan:
             {
-                Vector3d eye      = position_ - target_;
-                Vector3d left_dir = eye.cross(up_);
-                double   len      = eye.norm();
-                Vector3d trans_x  = left_dir.normalized();
-                Vector3d trans_y  = up_.normalized();
-                
-                trans_x *= len * static_cast<double>(x - prev_position_(0)) / scale_x;
-                trans_y *= len * static_cast<double>(y - prev_position_(1)) / scale_y;
-                
+                const Vector3d eye      = position_ - target_;
+                const Vector3d left_dir = eye.cross(up_);
+                const double   len      = eye.norm();
+                const double   diff_x   = static_cast<double>(x - prev_position_(0)) / scale_x;
+                const double   diff_y   = static_cast<double>(y - prev_position_(1)) / scale_y;
+                const Vector3d trans_x  = len * diff_x * left_dir.normalized();
+                const Vector3d trans_y  = len * diff_y * up_.normalized();
                 position_ += trans_x;
                 position_ += trans_y;
                 target_   += trans_x;
@@ -56,18 +54,18 @@ namespace threedimutil
             }
             case Mode::Rotate:
             {
-                double theta_x = (2.0 * M_PI * static_cast<double>(x - prev_position_(0))) / scale_x;
-                double theta_y = (2.0 * M_PI * static_cast<double>(y - prev_position_(1))) / scale_y;
+                const double theta_x = (2.0 * M_PI * static_cast<double>(x - prev_position_(0))) / scale_x;
+                const double theta_y = (2.0 * M_PI * static_cast<double>(y - prev_position_(1))) / scale_y;
                 
                 // Horizontal rotation
-                Matrix3d rot_h = AngleAxisd(- theta_x, up_).matrix();
-                Vector3d eye   = position_ - target_;
+                const Matrix3d rot_h = AngleAxisd(- theta_x, up_).matrix();
+                Vector3d eye = position_ - target_;
                 
                 // Vertical rotation
-                Vector3d left_dir = eye.cross(up_).normalized();
-                Matrix3d rot_v    = AngleAxisd(theta_y, left_dir).matrix();
+                const Vector3d left_dir = eye.cross(up_).normalized();
+                const Matrix3d rot_v    = AngleAxisd(theta_y, left_dir).matrix();
                 
-                double test = left_dir.dot((rot_v * eye).cross(up_));
+                const double test = left_dir.dot((rot_v * eye).cross(up_));
                 if (test > 0.0) {
                     eye = rot_v * rot_h * eye;
                 }
@@ -77,9 +75,11 @@ namespace threedimutil
             }
             case Mode::Zoom:
             {
-                Vector3d eye_direction = target_ - position_;
-                eye_direction *= static_cast<double>(y - prev_position_(1)) / scale_y;
-                position_ += 0.5 * eye_direction;
+                constexpr double scale = 0.5;
+                
+                const double   speed   = static_cast<double>(y - prev_position_(1)) / scale_y;
+                const Vector3d eye_ray = speed * (target_ - position_);
+                position_ += scale * eye_ray;
                 break;
             }
             default:
