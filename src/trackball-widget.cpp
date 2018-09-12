@@ -1,5 +1,5 @@
 #include <three-dim-util/widgets/trackball-widget.hpp>
-#include <three-dim-util/opengl2/gl-wrapper.hpp>
+#include <three-dim-util/opengl2/gl-wrappers.hpp>
 #include <three-dim-util/matrix.hpp>
 #include <sstream>
 #include <iomanip>
