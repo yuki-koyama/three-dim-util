@@ -1,7 +1,7 @@
 #ifndef sphere_hpp
 #define sphere_hpp
 
-#include <three-dim-util/primitives/abstract-primitive.hpp>
+#include <three-dim-util/opengl2/primitives/abstract-primitive.hpp>
 #include <Eigen/Core>
 
 namespace threedimutil

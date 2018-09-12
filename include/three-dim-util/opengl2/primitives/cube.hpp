@@ -1,7 +1,7 @@
 #ifndef cube_hpp
 #define cube_hpp
 
-#include <three-dim-util/primitives/abstract-primitive.hpp>
+#include <three-dim-util/opengl2/primitives/abstract-primitive.hpp>
 #include <Eigen/Core>
 
 namespace threedimutil

@@ -2,8 +2,8 @@
 #define draw_utils_hpp
 
 #include <three-dim-util/opengl2/gl-wrappers.hpp>
-#include <three-dim-util/primitives/cube.hpp>
-#include <three-dim-util/primitives/sphere.hpp>
+#include <three-dim-util/opengl2/primitives/cube.hpp>
+#include <three-dim-util/opengl2/primitives/sphere.hpp>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
