@@ -1,7 +1,7 @@
 #ifndef abstract_primitive_hpp
 #define abstract_primitive_hpp
 
-#include <three-dim-util/gl.hpp>
+#include <three-dim-util/opengl2/gl.hpp>
 #include <iostream>
 #include <Eigen/Core>
 

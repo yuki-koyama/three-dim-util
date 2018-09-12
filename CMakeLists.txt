@@ -25,7 +25,7 @@ include_directories(${GLM_INCLUDE_DIRS})
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
-file(GLOB headers ${CMAKE_CURRENT_SOURCE_DIR}/include/three-dim-util/*.hpp ${CMAKE_CURRENT_SOURCE_DIR}/include/three-dim-util/primitives/*.hpp ${CMAKE_CURRENT_SOURCE_DIR}/include/three-dim-util/widgets/*.hpp)
+file(GLOB headers ${CMAKE_CURRENT_SOURCE_DIR}/include/three-dim-util/*.hpp ${CMAKE_CURRENT_SOURCE_DIR}/include/three-dim-util/primitives/*.hpp ${CMAKE_CURRENT_SOURCE_DIR}/include/three-dim-util/widgets/*.hpp ${CMAKE_CURRENT_SOURCE_DIR}/include/three-dim-util/opengl2/*.hpp)
 file(GLOB sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 
 add_library(three-dim-util STATIC ${headers} ${sources})

@@ -1,5 +1,5 @@
 #include <three-dim-util/widgets/abstract-widget.hpp>
-#include <three-dim-util/gl-wrapper.hpp>
+#include <three-dim-util/opengl2/gl-wrapper.hpp>
 
 namespace threedimutil
 {
