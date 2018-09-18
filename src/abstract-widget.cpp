@@ -10,6 +10,12 @@ namespace threedimutil
         this->setFormat(format);
     }
     
+    void AbstractWidget::updateBackgroundColor(const Eigen::Vector3d& color)
+    {
+        background_color_ = color;
+        threedimutil::clear_color_3d(background_color_);
+    }
+    
     void AbstractWidget::saveImage(const std::string& output_file_path)
     {
         grab().save(QString::fromStdString(output_file_path));

@@ -24,6 +24,8 @@ namespace threedimutil
         double& far_clip ()       { return far_clip_;  }
         double  far_clip () const { return far_clip_;  }
         
+        void updateBackgroundColor(const Eigen::Vector3d& color);
+        
     protected:
         void initializeGL();
         void resizeGL(int w, int h);
@@ -33,7 +35,8 @@ namespace threedimutil
         
     private:
         const int num_samples_ = 8;
-        const Eigen::Vector3d background_color_ { 0.9, 0.9, 0.9 };
+        
+        Eigen::Vector3d background_color_ { 0.9, 0.9, 0.9 };
         
         threedimutil::Camera camera_;
         double near_clip_ = 0.05;
