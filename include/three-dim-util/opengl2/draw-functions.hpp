@@ -229,6 +229,39 @@ namespace threedimutil
         glPopMatrix();
     }
     
+    inline void draw_floor(double size       = 200.0,
+                           int    resolution = 20)
+    {
+        const Eigen::Vector3d color_1(0.92, 0.92, 0.92);
+        const Eigen::Vector3d color_2(0.82, 0.82, 0.82);
+        
+        const GLboolean is_gl_lighting_enabled = glIsEnabled(GL_LIGHTING);
+        glDisable(GL_LIGHTING);
+        
+        glBegin(GL_QUADS);
+        for (int i = 0; i < resolution; ++ i)
+        {
+            const double x_m = - 0.5 * size + (i + 0) * size / static_cast<double>(resolution);
+            const double x_p = - 0.5 * size + (i + 1) * size / static_cast<double>(resolution);
+            
+            for (int j = 0; j < resolution; ++ j)
+            {
+                const double z_m = - 0.5 * size + (j + 0) * size / static_cast<double>(resolution);
+                const double z_p = - 0.5 * size + (j + 1) * size / static_cast<double>(resolution);
+                
+                if ((i + j) % 2 == 0) { color_3d(color_1); } else { color_3d(color_2); }
+                
+                glVertex3d(x_p, 0.0, z_p);
+                glVertex3d(x_m, 0.0, z_p);
+                glVertex3d(x_m, 0.0, z_m);
+                glVertex3d(x_p, 0.0, z_m);
+            }
+        }
+        glEnd();
+        
+        if (is_gl_lighting_enabled) { glEnable(GL_LIGHTING); }
+    }
+    
     inline void draw_rectangle(const Eigen::Vector2d& t, double width, double height)
     {
         glMatrixMode(GL_MODELVIEW);
