@@ -229,12 +229,11 @@ namespace threedimutil
         glPopMatrix();
     }
     
-    inline void draw_floor(double size       = 200.0,
-                           int    resolution = 20)
+    inline void draw_floor(double                 size       = 200.0,
+                           int                    resolution = 20,
+                           const Eigen::Vector3d& color_1    = Eigen::Vector3d(0.9, 0.9, 0.9),
+                           const Eigen::Vector3d& color_2    = Eigen::Vector3d(0.8, 0.8, 0.8))
     {
-        const Eigen::Vector3d color_1(0.92, 0.92, 0.92);
-        const Eigen::Vector3d color_2(0.82, 0.82, 0.82);
-        
         const GLboolean is_gl_lighting_enabled = glIsEnabled(GL_LIGHTING);
         glDisable(GL_LIGHTING);
         
