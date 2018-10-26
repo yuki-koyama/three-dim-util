@@ -4,6 +4,7 @@
 #include <three-dim-util/widgets/abstract-widget.hpp>
 #include <string>
 #include <chrono>
+#include <memory>
 
 class QTimer;
 
