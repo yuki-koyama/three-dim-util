@@ -49,7 +49,7 @@ namespace threedimutil
             glBindBuffer(GL_ARRAY_BUFFER, normal_vbo_);
             glNormalPointer(GL_DOUBLE, 0, NULL);
             
-            glDrawArrays(GL_TRIANGLES, 0, vertices_.cols());
+            glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertices_.cols()));
             
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             

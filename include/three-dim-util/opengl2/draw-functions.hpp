@@ -48,7 +48,7 @@ namespace threedimutil
         assert(C.rows() == 3);
         assert(P.cols() == C.cols());
         
-        const int num_points = P.cols();
+        const int num_points = static_cast<int>(P.cols());
         
         glPointSize(size);
         glEnableClientState(GL_VERTEX_ARRAY);
