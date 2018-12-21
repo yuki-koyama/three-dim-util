@@ -1,6 +1,7 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
 
+#include <cmath>
 #include <Eigen/Core>
 
 namespace threedimutil
@@ -37,7 +38,7 @@ namespace threedimutil
         void EndTrackball  ();
         
     private:
-        double vertical_angle_of_view_ = 45.0;
+        double vertical_angle_of_view_ = M_PI * 45.0 / 180.0;
         
         Eigen::Vector3d position_;
         Eigen::Vector3d target_;
