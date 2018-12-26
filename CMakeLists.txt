@@ -11,6 +11,11 @@ if(APPLE AND EXISTS /usr/local/opt/qt5)
 	list(APPEND CMAKE_PREFIX_PATH "/usr/local/opt/qt5")
 endif()
 
+option(THREEDIMUTIL_SUPPRESS_GL_WARNINGS "" OFF)
+if(THREEDIMUTIL_SUPPRESS_GL_WARNINGS)
+	add_definitions(-DGL_SILENCE_DEPRECATION)
+endif()
+
 find_package(OpenGL REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(Qt5 COMPONENTS Widgets Gui REQUIRED)
