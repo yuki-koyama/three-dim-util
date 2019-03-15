@@ -1,5 +1,7 @@
 # three-dim-util
 
+[![Build Status](https://travis-ci.com/yuki-koyama/three-dim-util.svg?branch=master)](https://travis-ci.com/yuki-koyama/three-dim-util)
+
 A library of utility functions for prototyping OpenGL applications.
 
 ## Target Users
@@ -17,10 +19,20 @@ The target of this library is users who ...
 
 ## Dependencies
 
-- OpenGL
-- Eigen <http://eigen.tuxfamily.org/>
-- Qt <https://www.qt.io/>
+- OpenGL 2.1 (or compatible with 2.1)
+- Eigen 3.3 <http://eigen.tuxfamily.org/>
+- Qt 5 <https://www.qt.io/>
 - glm <https://glm.g-truc.net/>
+
+Ubuntu 18.04 LTS:
+```
+sudo apt install libeigen3-dev libglm-dev qt5-default
+```
+
+maxOS:
+```
+brew eigen glm qt
+```
 
 ## Projects using three-dim-util
 
