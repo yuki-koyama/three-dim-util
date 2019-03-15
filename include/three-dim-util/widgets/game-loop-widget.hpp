@@ -2,9 +2,9 @@
 #define game_loop_widget_hpp
 
 #include <three-dim-util/widgets/abstract-widget.hpp>
-#include <string>
 #include <chrono>
 #include <memory>
+#include <string>
 
 class QTimer;
 
