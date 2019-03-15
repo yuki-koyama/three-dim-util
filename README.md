@@ -1,5 +1,7 @@
 # three-dim-util
 
+[![Build Status](https://travis-ci.com/yuki-koyama/three-dim-util.svg?branch=master)](https://travis-ci.com/yuki-koyama/three-dim-util)
+
 A library of utility functions for prototyping OpenGL applications.
 
 ## Target Users
