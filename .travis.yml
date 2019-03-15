@@ -1,0 +1,24 @@
+language: cpp
+compiler:
+- clang
+- gcc
+os:
+- linux
+- osx
+dist: xenial
+addons:
+  homebrew:
+    packages:
+    - cmake
+    - eigen
+    - glm
+    - qt
+  apt:
+    packages:
+    - cmake
+    - libeigen3-dev
+    - libglm-dev
+    - qt5-default
+script:
+- cmake -DTHREEDIMUTIL_BUILD_DEMOS=OFF . && make
+- cmake -DTHREEDIMUTIL_BUILD_DEMOS=ON . && make
