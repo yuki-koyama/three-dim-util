@@ -17,8 +17,15 @@ addons:
     packages:
     - cmake
     - libeigen3-dev
-    - libglm-dev
     - qt5-default
+before_script:
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then git clone https://github.com/g-truc/glm.git; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mkdir build-glm; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd build-glm; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake ../glm; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make && make install; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd ..; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then rm -rf glm build-glm; fi
 script:
 - cmake -DTHREEDIMUTIL_BUILD_DEMOS=OFF . && make
 - cmake -DTHREEDIMUTIL_BUILD_DEMOS=ON . && make
