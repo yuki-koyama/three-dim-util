@@ -1,4 +1,4 @@
-#include <three-dim-util/widgets/trackball-widget.hpp>
+#include <three-dim-util/opengl2/widgets/trackball-widget.hpp>
 #include <three-dim-util/opengl2/gl.hpp>
 #include <three-dim-util/opengl2/gl-wrappers.hpp>
 #include <three-dim-util/matrix.hpp>

@@ -1,7 +1,7 @@
 #ifndef game_loop_widget_hpp
 #define game_loop_widget_hpp
 
-#include <three-dim-util/widgets/abstract-widget.hpp>
+#include <three-dim-util/opengl2/widgets/abstract-widget.hpp>
 #include <chrono>
 #include <memory>
 #include <string>

@@ -1,4 +1,4 @@
-#include <three-dim-util/widgets/game-loop-widget.hpp>
+#include <three-dim-util/opengl2/widgets/game-loop-widget.hpp>
 #include <three-dim-util/opengl2/gl-wrappers.hpp>
 #include <three-dim-util/matrix.hpp>
 #include <QMouseEvent>

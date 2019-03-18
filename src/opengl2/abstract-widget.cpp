@@ -1,4 +1,4 @@
-#include <three-dim-util/widgets/abstract-widget.hpp>
+#include <three-dim-util/opengl2/widgets/abstract-widget.hpp>
 #include <three-dim-util/opengl2/gl-wrappers.hpp>
 
 namespace threedimutil

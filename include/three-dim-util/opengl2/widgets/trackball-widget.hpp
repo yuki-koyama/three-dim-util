@@ -1,7 +1,7 @@
 #ifndef TrackballWidget_hpp
 #define TrackballWidget_hpp
 
-#include <three-dim-util/widgets/abstract-widget.hpp>
+#include <three-dim-util/opengl2/widgets/abstract-widget.hpp>
 #include <three-dim-util/camera.hpp>
 #include <string>
 
