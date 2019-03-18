@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/yuki-koyama/three-dim-util.svg?branch=master)](https://travis-ci.com/yuki-koyama/three-dim-util)
 
-A library of utility functions for prototyping OpenGL applications.
+A utility library for prototyping 3D applications based on Qt, Eigen, and legacy OpenGL.
 
 ## Target Users
 
@@ -20,7 +20,7 @@ The target of this library is users who ...
 ## Dependencies
 
 - OpenGL 2.1 (or compatible with 2.1)
-- Eigen 3.3 <http://eigen.tuxfamily.org/>
+- Eigen 3 <http://eigen.tuxfamily.org/>
 - Qt 5 <https://www.qt.io/>
 - glm <https://glm.g-truc.net/>
 
@@ -42,3 +42,7 @@ brew eigen glm qt
 ## License
 
 MIT License.
+
+## Future Work
+
+- Support OpenGL 3+.
