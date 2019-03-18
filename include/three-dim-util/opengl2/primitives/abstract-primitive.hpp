@@ -1,13 +1,13 @@
 #ifndef abstract_primitive_hpp
 #define abstract_primitive_hpp
 
-#include <three-dim-util/opengl2/gl.hpp>
 #include <iostream>
 #include <Eigen/Core>
+#include <QOpenGLFunctions_2_1>
 
 namespace threedimutil
 {
-    class AbstractPrimitive
+    class AbstractPrimitive : protected QOpenGLFunctions_2_1
     {
     public:
         // static void Initialize();
@@ -22,16 +22,18 @@ namespace threedimutil
                 std::cerr << "Warning: Initialize() is called but it is already initialized. This call is ignored." << std::endl;
                 return;
             }
+
+            initializeOpenGLFunctions();
             
             CreateVertexData();
             
-            glGenBuffers(1, &vertex_vbo_);
-            glBindBuffer(GL_ARRAY_BUFFER, vertex_vbo_);
-            glBufferData(GL_ARRAY_BUFFER, sizeof(GLdouble) * vertices_.size(), vertices_.data(), GL_STATIC_DRAW);
+            this->glGenBuffers(1, &vertex_vbo_);
+            this->glBindBuffer(GL_ARRAY_BUFFER, vertex_vbo_);
+            this->glBufferData(GL_ARRAY_BUFFER, sizeof(GLdouble) * vertices_.size(), vertices_.data(), GL_STATIC_DRAW);
             
-            glGenBuffers(1, &normal_vbo_);
-            glBindBuffer(GL_ARRAY_BUFFER, normal_vbo_);
-            glBufferData(GL_ARRAY_BUFFER, sizeof(GLdouble) * normals_.size(), normals_.data(), GL_STATIC_DRAW);
+            this->glGenBuffers(1, &normal_vbo_);
+            this->glBindBuffer(GL_ARRAY_BUFFER, normal_vbo_);
+            this->glBufferData(GL_ARRAY_BUFFER, sizeof(GLdouble) * normals_.size(), normals_.data(), GL_STATIC_DRAW);
             
             ready_ = true;
         }
@@ -40,21 +42,21 @@ namespace threedimutil
         {
             if (!ready_) { InitializeInternal(); }
             
-            glEnableClientState(GL_VERTEX_ARRAY);
-            glEnableClientState(GL_NORMAL_ARRAY);
+            this->glEnableClientState(GL_VERTEX_ARRAY);
+            this->glEnableClientState(GL_NORMAL_ARRAY);
             
-            glBindBuffer(GL_ARRAY_BUFFER, vertex_vbo_);
-            glVertexPointer(3, GL_DOUBLE, 0, NULL);
+            this->glBindBuffer(GL_ARRAY_BUFFER, vertex_vbo_);
+            this->glVertexPointer(3, GL_DOUBLE, 0, NULL);
             
-            glBindBuffer(GL_ARRAY_BUFFER, normal_vbo_);
-            glNormalPointer(GL_DOUBLE, 0, NULL);
+            this->glBindBuffer(GL_ARRAY_BUFFER, normal_vbo_);
+            this->glNormalPointer(GL_DOUBLE, 0, NULL);
             
-            glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertices_.cols()));
+            this->glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertices_.cols()));
             
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            this->glBindBuffer(GL_ARRAY_BUFFER, 0);
             
-            glDisableClientState(GL_VERTEX_ARRAY);
-            glDisableClientState(GL_NORMAL_ARRAY);
+            this->glDisableClientState(GL_VERTEX_ARRAY);
+            this->glDisableClientState(GL_NORMAL_ARRAY);
         }
         
         AbstractPrimitive() = default;
@@ -62,8 +64,8 @@ namespace threedimutil
         {
             if (ready_)
             {
-                glDeleteBuffers(1, &vertex_vbo_);
-                glDeleteBuffers(1, &normal_vbo_);
+                this->glDeleteBuffers(1, &vertex_vbo_);
+                this->glDeleteBuffers(1, &normal_vbo_);
             }
         }
         AbstractPrimitive(const AbstractPrimitive&)            = delete;

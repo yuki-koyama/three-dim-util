@@ -28,10 +28,10 @@ namespace threedimutil
         
         void set() const
         {
-            glMaterialfv(GL_FRONT, GL_AMBIENT,   ambient  .data());
-            glMaterialfv(GL_FRONT, GL_DIFFUSE,   diffuse  .data());
-            glMaterialfv(GL_FRONT, GL_SPECULAR,  specular .data());
-            glMaterialf (GL_FRONT, GL_SHININESS, shininess       );
+            internal::GlFunctions::get()->glMaterialfv(GL_FRONT, GL_AMBIENT,   ambient  .data());
+            internal::GlFunctions::get()->glMaterialfv(GL_FRONT, GL_DIFFUSE,   diffuse  .data());
+            internal::GlFunctions::get()->glMaterialfv(GL_FRONT, GL_SPECULAR,  specular .data());
+            internal::GlFunctions::get()->glMaterialf (GL_FRONT, GL_SHININESS, shininess       );
         }
     };
 }

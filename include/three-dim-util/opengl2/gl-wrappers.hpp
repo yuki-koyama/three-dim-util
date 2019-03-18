@@ -6,19 +6,19 @@
 
 namespace threedimutil
 {
-    inline void clear_color_3d(const Eigen::Vector3d& c) { glClearColor(c(0), c(1), c(2), 1.0); }
-    inline void color_3d(const Eigen::Vector3d& c) { glColor3d(c(0), c(1), c(2)); }
-    inline void color_4d(const Eigen::Vector3d& c, double a) { glColor4d(c(0), c(1), c(2), a); }
+    inline void clear_color_3d(const Eigen::Vector3d& c) { internal::GlFunctions::get()->glClearColor(c(0), c(1), c(2), 1.0); }
+    inline void color_3d(const Eigen::Vector3d& c) { internal::GlFunctions::get()->glColor3d(c(0), c(1), c(2)); }
+    inline void color_4d(const Eigen::Vector3d& c, double a) { internal::GlFunctions::get()->glColor4d(c(0), c(1), c(2), a); }
     
-    inline void vertex_2d(const Eigen::Vector2d& v) { glVertex2d(v(0), v(1)); }
-    inline void vertex_3d(const Eigen::Vector3d& v) { glVertex3d(v(0), v(1), v(2)); }
+    inline void vertex_2d(const Eigen::Vector2d& v) { internal::GlFunctions::get()->glVertex2d(v(0), v(1)); }
+    inline void vertex_3d(const Eigen::Vector3d& v) { internal::GlFunctions::get()->glVertex3d(v(0), v(1), v(2)); }
 
-    inline void translate(const Eigen::Vector2d& t) { glTranslated(t(0), t(1), 0.0); }
-    inline void translate(const Eigen::Vector3d& t) { glTranslated(t(0), t(1), t(2)); }
-    inline void rotate(double angle, const Eigen::Vector3d& axis) { glRotated(angle, axis(0), axis(1), axis(2)); }
+    inline void translate(const Eigen::Vector2d& t) { internal::GlFunctions::get()->glTranslated(t(0), t(1), 0.0); }
+    inline void translate(const Eigen::Vector3d& t) { internal::GlFunctions::get()->glTranslated(t(0), t(1), t(2)); }
+    inline void rotate(double angle, const Eigen::Vector3d& axis) { internal::GlFunctions::get()->glRotated(angle, axis(0), axis(1), axis(2)); }
     
-    inline void load_matrix(const Eigen::Matrix4d& m) { glLoadMatrixd(m.data()); }
-    inline void mult_matrix(const Eigen::Matrix4d& m) { glMultMatrixd(m.data()); }
+    inline void load_matrix(const Eigen::Matrix4d& m) { internal::GlFunctions::get()->glLoadMatrixd(m.data()); }
+    inline void mult_matrix(const Eigen::Matrix4d& m) { internal::GlFunctions::get()->glMultMatrixd(m.data()); }
     
     inline void read_pixels(int width,
                             int height,
@@ -28,7 +28,7 @@ namespace threedimutil
                             Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>& A)
     {
         Eigen::Matrix<GLuint, Eigen::Dynamic, Eigen::Dynamic> buffer(width, height);
-        glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer.data());
+        internal::GlFunctions::get()->glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer.data());
         R = Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>(width, height);
         G = Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>(width, height);
         B = Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>(width, height);

@@ -26,16 +26,16 @@ namespace threedimutil
         initializeOpenGLFunctions();
         threedimutil::clear_color_3d(background_color_);
         
-        glEnable(GL_LINE_SMOOTH);
-        glEnable(GL_POLYGON_SMOOTH);
-        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-        glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+        this->glEnable(GL_LINE_SMOOTH);
+        this->glEnable(GL_POLYGON_SMOOTH);
+        this->glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+        this->glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
         
-        glEnable(GL_DEPTH_TEST);
+        this->glEnable(GL_DEPTH_TEST);
     }
     
     void AbstractWidget::resizeGL(int w, int h)
     {
-        glViewport(0, 0, w, h);
+        this->glViewport(0, 0, w, h);
     }
 }
