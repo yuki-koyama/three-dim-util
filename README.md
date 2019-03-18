@@ -31,7 +31,7 @@ sudo apt install libeigen3-dev libglm-dev qt5-default
 
 maxOS:
 ```
-brew eigen glm qt
+brew install eigen glm qt
 ```
 
 ## Projects using three-dim-util
