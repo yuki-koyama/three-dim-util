@@ -70,15 +70,15 @@ namespace threedimutil
     void GameLoopWidget::setProjectionMatrix()
     {
         const double aspect = static_cast<double>(width()) / static_cast<double>(height());
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
+        this->glMatrixMode(GL_PROJECTION);
+        this->glLoadIdentity();
         threedimutil::mult_matrix(threedimutil::make_perspective(camera().vertical_angle_of_view(), aspect, near_clip(), far_clip()));
     }
     
     void GameLoopWidget::setModelViewMatrix()
     {
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
+        this->glMatrixMode(GL_MODELVIEW);
+        this->glLoadIdentity();
         threedimutil::mult_matrix(threedimutil::make_look_at(camera()));
     }
     

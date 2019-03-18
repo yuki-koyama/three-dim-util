@@ -4,11 +4,11 @@
 #include <three-dim-util/camera.hpp>
 #include <string>
 #include <QOpenGLWidget>
-#include <QOpenGLFunctions>
+#include <QOpenGLFunctions_2_1>
 
 namespace threedimutil
 {
-    class AbstractWidget : public QOpenGLWidget, protected QOpenGLFunctions
+    class AbstractWidget : public QOpenGLWidget, protected QOpenGLFunctions_2_1
     {
         Q_OBJECT
     public:

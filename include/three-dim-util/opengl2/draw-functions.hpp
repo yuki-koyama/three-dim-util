@@ -1,6 +1,7 @@
 #ifndef draw_utils_hpp
 #define draw_utils_hpp
 
+#include <three-dim-util/opengl2/gl.hpp>
 #include <three-dim-util/opengl2/gl-wrappers.hpp>
 #include <three-dim-util/opengl2/primitives/cube.hpp>
 #include <three-dim-util/opengl2/primitives/sphere.hpp>
@@ -12,34 +13,34 @@ namespace threedimutil
     inline void draw_point_with_border(const Eigen::Vector3d& p, double size = 12.0)
     {
         GLint function;
-        glGetIntegerv(GL_DEPTH_FUNC, &function);
+        internal::GlFunctions::get()->glGetIntegerv(GL_DEPTH_FUNC, &function);
         
         GLdouble color[4];
-        glGetDoublev(GL_CURRENT_COLOR, color);
+        internal::GlFunctions::get()->glGetDoublev(GL_CURRENT_COLOR, color);
         
-        glDepthFunc(GL_LEQUAL);
+        internal::GlFunctions::get()->glDepthFunc(GL_LEQUAL);
         
-        glPointSize(size);
-        glColor3d(1.0, 1.0, 1.0);
-        glBegin(GL_POINTS);
+        internal::GlFunctions::get()->glPointSize(size);
+        internal::GlFunctions::get()->glColor3d(1.0, 1.0, 1.0);
+        internal::GlFunctions::get()->glBegin(GL_POINTS);
         vertex_3d(p);
-        glEnd();
+        internal::GlFunctions::get()->glEnd();
         
         glPointSize(size * 0.8);
-        glColor4dv(color);
-        glBegin(GL_POINTS);
+        internal::GlFunctions::get()->glColor4dv(color);
+        internal::GlFunctions::get()->glBegin(GL_POINTS);
         vertex_3d(p);
-        glEnd();
+        internal::GlFunctions::get()->glEnd();
         
-        glDepthFunc(function);
+        internal::GlFunctions::get()->glDepthFunc(function);
     }
     
     inline void draw_point(const Eigen::Vector3d& p, double size = 12.0)
     {
-        glPointSize(size);
-        glBegin(GL_POINTS);
+        internal::GlFunctions::get()->glPointSize(size);
+        internal::GlFunctions::get()->glBegin(GL_POINTS);
         vertex_3d(p);
-        glEnd();
+        internal::GlFunctions::get()->glEnd();
     }
     
     inline void draw_points(const Eigen::MatrixXd& P, const Eigen::MatrixXd& C, double size = 12.0)
@@ -50,54 +51,54 @@ namespace threedimutil
         
         const int num_points = static_cast<int>(P.cols());
         
-        glPointSize(size);
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glEnableClientState(GL_COLOR_ARRAY);
-        glVertexPointer(3, GL_DOUBLE, 0, P.data());
-        glColorPointer(3, GL_DOUBLE, 0, C.data());
-        glDrawArrays(GL_POINTS, 0, num_points);
-        glDisableClientState(GL_VERTEX_ARRAY);
-        glDisableClientState(GL_COLOR_ARRAY);
+        internal::GlFunctions::get()->glPointSize(size);
+        internal::GlFunctions::get()->glEnableClientState(GL_VERTEX_ARRAY);
+        internal::GlFunctions::get()->glEnableClientState(GL_COLOR_ARRAY);
+        internal::GlFunctions::get()->glVertexPointer(3, GL_DOUBLE, 0, P.data());
+        internal::GlFunctions::get()->glColorPointer(3, GL_DOUBLE, 0, C.data());
+        internal::GlFunctions::get()->glDrawArrays(GL_POINTS, 0, num_points);
+        internal::GlFunctions::get()->glDisableClientState(GL_VERTEX_ARRAY);
+        internal::GlFunctions::get()->glDisableClientState(GL_COLOR_ARRAY);
     }
     
     inline void draw_edges(const Eigen::MatrixXd& P, const Eigen::MatrixXi& E)
     {
         assert(P.rows() == 3);
         assert(E.rows() == 2);
-        glBegin(GL_LINES);
+        internal::GlFunctions::get()->glBegin(GL_LINES);
         for (int i = 0; i < E.cols(); ++ i)
         {
             vertex_3d(P.col(E(0, i)));
             vertex_3d(P.col(E(1, i)));
         }
-        glEnd();
+        internal::GlFunctions::get()->glEnd();
     }
     
     inline void draw_mesh(const Eigen::MatrixXd& V, const Eigen::MatrixXi& F)
     {
         assert(V.rows() == 3);
         assert(F.rows() == 3);
-        glBegin(GL_TRIANGLES);
+        internal::GlFunctions::get()->glBegin(GL_TRIANGLES);
         for (int i = 0; i < F.cols(); ++ i)
         {
             vertex_3d(V.col(F(0, i)));
             vertex_3d(V.col(F(1, i)));
             vertex_3d(V.col(F(2, i)));
         }
-        glEnd();
+        internal::GlFunctions::get()->glEnd();
     }
     
     inline void draw_cube(const Eigen::Vector3d& t, double x, double y, double z)
     {
-        const GLboolean is_gl_normalize_enabled = glIsEnabled(GL_NORMALIZE);
-        glEnable(GL_NORMALIZE);
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
+        const GLboolean is_gl_normalize_enabled = internal::GlFunctions::get()->glIsEnabled(GL_NORMALIZE);
+        internal::GlFunctions::get()->glEnable(GL_NORMALIZE);
+        internal::GlFunctions::get()->glMatrixMode(GL_MODELVIEW);
+        internal::GlFunctions::get()->glPushMatrix();
         translate(t);
-        glScaled(x, y, z);
+        internal::GlFunctions::get()->glScaled(x, y, z);
         Cube::Draw();
-        glPopMatrix();
-        if (!is_gl_normalize_enabled) { glDisable(GL_NORMALIZE); }
+        internal::GlFunctions::get()->glPopMatrix();
+        if (!is_gl_normalize_enabled) { internal::GlFunctions::get()->glDisable(GL_NORMALIZE); }
     }
     
     inline void draw_cube(double size = 1.0)
@@ -117,13 +118,13 @@ namespace threedimutil
         Eigen::MatrixXd normals = Eigen::MatrixXd::Zero(3, resolution);
         normals.row(2) = Eigen::VectorXd::Ones(resolution);
         
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glEnableClientState(GL_NORMAL_ARRAY);
-        glVertexPointer(2, GL_DOUBLE, 0, vertices.data());
-        glNormalPointer(GL_DOUBLE, 0, normals.data());
-        glDrawArrays(GL_TRIANGLE_FAN, 0, resolution);
-        glDisableClientState(GL_VERTEX_ARRAY);
-        glDisableClientState(GL_NORMAL_ARRAY);
+        internal::GlFunctions::get()->glEnableClientState(GL_VERTEX_ARRAY);
+        internal::GlFunctions::get()->glEnableClientState(GL_NORMAL_ARRAY);
+        internal::GlFunctions::get()->glVertexPointer(2, GL_DOUBLE, 0, vertices.data());
+        internal::GlFunctions::get()->glNormalPointer(GL_DOUBLE, 0, normals.data());
+        internal::GlFunctions::get()->glDrawArrays(GL_TRIANGLE_FAN, 0, resolution);
+        internal::GlFunctions::get()->glDisableClientState(GL_VERTEX_ARRAY);
+        internal::GlFunctions::get()->glDisableClientState(GL_NORMAL_ARRAY);
     }
     
     inline void draw_cylinder(double radius, double height, int resolution = 30)
@@ -160,31 +161,31 @@ namespace threedimutil
             }
         }
         
-        glMatrixMode(GL_MODELVIEW);
+        internal::GlFunctions::get()->glMatrixMode(GL_MODELVIEW);
         
         // Draw a cylinder
-        const GLboolean is_gl_normalize_enabled = glIsEnabled(GL_NORMALIZE);
-        glEnable(GL_NORMALIZE);
-        glPushMatrix();
-        glScaled(radius, radius, height);
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glEnableClientState(GL_NORMAL_ARRAY);
-        glVertexPointer(3, GL_DOUBLE, 0, vertices.data());
-        glNormalPointer(GL_DOUBLE, 0, normals.data());
-        glDrawArrays(GL_QUADS, 0, resolution * 4);
-        glDisableClientState(GL_VERTEX_ARRAY);
-        glDisableClientState(GL_NORMAL_ARRAY);
-        glPopMatrix();
-        if (!is_gl_normalize_enabled) { glDisable(GL_NORMALIZE); }
+        const GLboolean is_gl_normalize_enabled = internal::GlFunctions::get()->glIsEnabled(GL_NORMALIZE);
+        internal::GlFunctions::get()->glEnable(GL_NORMALIZE);
+        internal::GlFunctions::get()->glPushMatrix();
+        internal::GlFunctions::get()->glScaled(radius, radius, height);
+        internal::GlFunctions::get()->glEnableClientState(GL_VERTEX_ARRAY);
+        internal::GlFunctions::get()->glEnableClientState(GL_NORMAL_ARRAY);
+        internal::GlFunctions::get()->glVertexPointer(3, GL_DOUBLE, 0, vertices.data());
+        internal::GlFunctions::get()->glNormalPointer(GL_DOUBLE, 0, normals.data());
+        internal::GlFunctions::get()->glDrawArrays(GL_QUADS, 0, resolution * 4);
+        internal::GlFunctions::get()->glDisableClientState(GL_VERTEX_ARRAY);
+        internal::GlFunctions::get()->glDisableClientState(GL_NORMAL_ARRAY);
+        internal::GlFunctions::get()->glPopMatrix();
+        if (!is_gl_normalize_enabled) { internal::GlFunctions::get()->glDisable(GL_NORMALIZE); }
         
         // Draw circles at both ends
-        glPushMatrix();
-        glScaled(-1.0, 1.0, -1.0);
+        internal::GlFunctions::get()->glPushMatrix();
+        internal::GlFunctions::get()->glScaled(-1.0, 1.0, -1.0);
         draw_circle(radius, resolution);
-        glScaled(-1.0, 1.0, -1.0);
-        glTranslated(0.0, 0.0, height);
+        internal::GlFunctions::get()->glScaled(-1.0, 1.0, -1.0);
+        internal::GlFunctions::get()->glTranslated(0.0, 0.0, height);
         draw_circle(radius, resolution);
-        glPopMatrix();
+        internal::GlFunctions::get()->glPopMatrix();
     }
     
     inline void draw_cylinder(double radius, const Eigen::Vector3d& p_1, const Eigen::Vector3d& p_2, int resolution = 30)
@@ -200,33 +201,33 @@ namespace threedimutil
             return std::isnan(q) ? Eigen::Matrix4d::Identity() : Eigen::Affine3d(Eigen::AngleAxisd(q, ax)).matrix();
         }();
         
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
+        internal::GlFunctions::get()->glMatrixMode(GL_MODELVIEW);
+        internal::GlFunctions::get()->glPushMatrix();
         translate(p_1);
         mult_matrix(rot);
         draw_cylinder(radius, h, resolution);
-        glPopMatrix();
+        internal::GlFunctions::get()->glPopMatrix();
     }
     
     inline void draw_sphere(double radius)
     {
-        const GLboolean is_gl_normalize_enabled = glIsEnabled(GL_NORMALIZE);
-        glEnable(GL_NORMALIZE);
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
-        glScaled(radius, radius, radius);
+        const GLboolean is_gl_normalize_enabled = internal::GlFunctions::get()->glIsEnabled(GL_NORMALIZE);
+        internal::GlFunctions::get()->glEnable(GL_NORMALIZE);
+        internal::GlFunctions::get()->glMatrixMode(GL_MODELVIEW);
+        internal::GlFunctions::get()->glPushMatrix();
+        internal::GlFunctions::get()->glScaled(radius, radius, radius);
         Sphere::Draw();
-        glPopMatrix();
-        if (!is_gl_normalize_enabled) { glDisable(GL_NORMALIZE); }
+        internal::GlFunctions::get()->glPopMatrix();
+        if (!is_gl_normalize_enabled) { internal::GlFunctions::get()->glDisable(GL_NORMALIZE); }
     }
     
     inline void draw_sphere(double radius, const Eigen::Vector3d& t)
     {
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
+        internal::GlFunctions::get()->glMatrixMode(GL_MODELVIEW);
+        internal::GlFunctions::get()->glPushMatrix();
         translate(t);
         draw_sphere(radius);
-        glPopMatrix();
+        internal::GlFunctions::get()->glPopMatrix();
     }
     
     inline void draw_floor(double                 size       = 200.0,
@@ -234,10 +235,10 @@ namespace threedimutil
                            const Eigen::Vector3d& color_1    = Eigen::Vector3d(0.9, 0.9, 0.9),
                            const Eigen::Vector3d& color_2    = Eigen::Vector3d(0.8, 0.8, 0.8))
     {
-        const GLboolean is_gl_lighting_enabled = glIsEnabled(GL_LIGHTING);
-        glDisable(GL_LIGHTING);
+        const GLboolean is_gl_lighting_enabled = internal::GlFunctions::get()->glIsEnabled(GL_LIGHTING);
+        internal::GlFunctions::get()->glDisable(GL_LIGHTING);
         
-        glBegin(GL_QUADS);
+        internal::GlFunctions::get()->glBegin(GL_QUADS);
         for (int i = 0; i < resolution; ++ i)
         {
             const double x_m = - 0.5 * size + (i + 0) * size / static_cast<double>(resolution);
@@ -250,30 +251,30 @@ namespace threedimutil
                 
                 if ((i + j) % 2 == 0) { color_3d(color_1); } else { color_3d(color_2); }
                 
-                glVertex3d(x_p, 0.0, z_p);
-                glVertex3d(x_m, 0.0, z_p);
-                glVertex3d(x_m, 0.0, z_m);
-                glVertex3d(x_p, 0.0, z_m);
+                internal::GlFunctions::get()->glVertex3d(x_p, 0.0, z_p);
+                internal::GlFunctions::get()->glVertex3d(x_m, 0.0, z_p);
+                internal::GlFunctions::get()->glVertex3d(x_m, 0.0, z_m);
+                internal::GlFunctions::get()->glVertex3d(x_p, 0.0, z_m);
             }
         }
-        glEnd();
+        internal::GlFunctions::get()->glEnd();
         
-        if (is_gl_lighting_enabled) { glEnable(GL_LIGHTING); }
+        if (is_gl_lighting_enabled) { internal::GlFunctions::get()->glEnable(GL_LIGHTING); }
     }
     
     inline void draw_rectangle(const Eigen::Vector2d& t, double width, double height)
     {
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
+        internal::GlFunctions::get()->glMatrixMode(GL_MODELVIEW);
+        internal::GlFunctions::get()->glPushMatrix();
         translate(t);
-        glBegin(GL_QUADS);
-        glNormal3d(0.0, 0.0, 1.0);
-        glVertex2d(+ 0.5 * width, + 0.5 * height);
-        glVertex2d(- 0.5 * width, + 0.5 * height);
-        glVertex2d(- 0.5 * width, - 0.5 * height);
-        glVertex2d(+ 0.5 * width, - 0.5 * height);
-        glEnd();
-        glPopMatrix();
+        internal::GlFunctions::get()->glBegin(GL_QUADS);
+        internal::GlFunctions::get()->glNormal3d(0.0, 0.0, 1.0);
+        internal::GlFunctions::get()->glVertex2d(+ 0.5 * width, + 0.5 * height);
+        internal::GlFunctions::get()->glVertex2d(- 0.5 * width, + 0.5 * height);
+        internal::GlFunctions::get()->glVertex2d(- 0.5 * width, - 0.5 * height);
+        internal::GlFunctions::get()->glVertex2d(+ 0.5 * width, - 0.5 * height);
+        internal::GlFunctions::get()->glEnd();
+        internal::GlFunctions::get()->glPopMatrix();
     }
 }
 
