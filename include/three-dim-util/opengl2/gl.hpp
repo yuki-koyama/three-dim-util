@@ -7,12 +7,12 @@ namespace threedimutil
 {
     namespace internal
     {
-        class GlFunctions : public QOpenGLFunctions_2_1
+        class OpenglFunctions : public QOpenGLFunctions_2_1
         {
         public:
-            static GlFunctions* get()
+            static OpenglFunctions* getInstance()
             {
-                static GlFunctions object;
+                static OpenglFunctions object;
                 if (!object.is_initialized_)
                 {
                     object.initializeOpenGLFunctions();
@@ -24,6 +24,8 @@ namespace threedimutil
             bool is_initialized_ = false;
         };
     }
+
+    inline internal::OpenglFunctions* gl() { return internal::OpenglFunctions::getInstance(); }
 }
 
 #endif // GL_HPP
