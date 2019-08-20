@@ -100,7 +100,7 @@ Eigen::Matrix4d threedimutil::Camera::GetLookAtMatrix() const
     Eigen::Matrix4d mat = Eigen::Matrix4d::Identity();
 
     const Eigen::Vector3d forward = (m_target - m_position).normalized();
-    const Eigen::Vector3d side    = forward.cross(m_up);
+    const Eigen::Vector3d side    = forward.cross(m_up).normalized();
     const Eigen::Vector3d up      = side.cross(forward);
 
     mat.block<1, 3>(0, 0) = side.transpose();
