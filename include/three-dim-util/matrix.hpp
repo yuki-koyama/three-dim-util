@@ -3,6 +3,7 @@
 
 #include <three-dim-util/camera.hpp>
 #include <Eigen/Core>
+#include <Eigen/Geometry>
 
 namespace threedimutil
 {
