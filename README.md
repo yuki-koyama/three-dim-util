@@ -17,21 +17,20 @@ The target of this library is users who ...
 - Do not care about using legacy OpenGL APIs
   - This library relies on legacy OpenGL APIs that were declared deprecated.
 
-## Dependencies
+## Requirements
 
-- OpenGL 2.1 (or compatible with 2.1)
 - Eigen 3 <http://eigen.tuxfamily.org/>
 - Qt 5 <https://www.qt.io/>
-- glm <https://glm.g-truc.net/>
+- OpenGL 2.1 (or compatible with 2.1)
 
 Ubuntu 18.04 LTS:
 ```
-sudo apt install libeigen3-dev libglm-dev qt5-default
+sudo apt install libeigen3-dev qt5-default
 ```
 
 maxOS:
 ```
-brew install eigen glm qt
+brew install eigen qt
 ```
 
 ## Projects using three-dim-util

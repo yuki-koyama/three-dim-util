@@ -3,33 +3,44 @@
 
 #include <three-dim-util/camera.hpp>
 #include <Eigen/Core>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 namespace threedimutil
 {
-    inline Eigen::Matrix4d convert_matrix_type(const glm::mat4& mat)
-    {
-        return Eigen::Map<const Eigen::Matrix4f>(glm::value_ptr(mat)).cast<double>();
-    }
-    
     inline Eigen::Matrix4d make_perspective(double fov,
                                             double aspect,
                                             double near,
                                             double far)
     {
-        const glm::mat4 mat = glm::perspective(fov, aspect, near, far);
-        return convert_matrix_type(mat);
+        const double val = std::tan(0.5 * fov);
+
+        Eigen::Matrix4d mat = Eigen::Matrix4d::Zero();
+        mat(0, 0) = 1.0 / (aspect * val);
+        mat(1, 1) = 1.0 / (val);
+        mat(2, 2) = far / (near - far);
+        mat(3, 2) = - 1.0;
+        mat(2, 3) = - 2.0 * (far * near) / (far - near);
+
+        return mat;
     }
-    
+
     inline Eigen::Matrix4d make_look_at(const Eigen::Vector3d& camera_position,
                                         const Eigen::Vector3d& target_position,
                                         const Eigen::Vector3d& up_direction)
     {
-        const glm::mat4 mat = glm::lookAt(glm::vec3(camera_position(0), camera_position(1), camera_position(2)),
-                                          glm::vec3(target_position(0), target_position(1), target_position(2)),
-                                          glm::vec3(up_direction(0), up_direction(1), up_direction(2)));
-        return convert_matrix_type(mat);
+        Eigen::Matrix4d mat = Eigen::Matrix4d::Identity();
+
+        const Eigen::Vector3d forward = (target_position - camera_position).normalized();
+        const Eigen::Vector3d side    = forward.cross(up_direction).normalized();
+        const Eigen::Vector3d up      = side.cross(forward);
+
+        mat.block<1, 3>(0, 0) = side.transpose();
+        mat.block<1, 3>(1, 0) = up.transpose();
+        mat.block<1, 3>(2, 0) = - forward.transpose();
+        mat(0, 3) = - side.dot(camera_position);
+        mat(1, 3) = - up.dot(camera_position);
+        mat(2, 3) = forward.dot(camera_position);
+
+        return mat;
     }
     
     inline Eigen::Matrix4d make_look_at(const Camera& camera)
