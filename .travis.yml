@@ -1,21 +1,20 @@
 language: cpp
-compiler:
-- clang
-- gcc
-os:
-- linux
-- osx
+matrix:
+  include:
+  - compiler: gcc
+    os: linux
+  - compiler: clang
+    os: osx
 dist: xenial
 addons:
   homebrew:
+    update: true
     packages:
-    - cmake
     - eigen
     - glm
     - qt
   apt:
     packages:
-    - cmake
     - libeigen3-dev
     - qt5-default
 before_script:
