@@ -24,6 +24,17 @@ namespace threedimutil
         return mat;
     }
 
+    inline Eigen::Matrix4d make_perspective(double   fov,
+                                            unsigned frame_width,
+                                            unsigned frame_height,
+                                            double   near,
+                                            double   far)
+    {
+        const double aspect = static_cast<double>(frame_width) / static_cast<double>(frame_height);
+
+        return make_perspective(fov, aspect, near, far);
+    }
+
     inline Eigen::Matrix4d make_look_at(const Eigen::Vector3d& camera_position,
                                         const Eigen::Vector3d& target_position,
                                         const Eigen::Vector3d& up_direction)
