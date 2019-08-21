@@ -34,4 +34,4 @@ namespace threedimutil
     }
 }
 
-#endif /* THREEDIMUTIL_MESH_HPP */
+#endif // THREEDIMUTIL_MESH_HPP
