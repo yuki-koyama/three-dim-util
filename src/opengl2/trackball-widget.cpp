@@ -50,7 +50,7 @@ namespace threedimutil
         const double aspect = static_cast<double>(width()) / static_cast<double>(height());
         this->glMatrixMode(GL_PROJECTION);
         this->glLoadIdentity();
-        threedimutil::mult_matrix(threedimutil::make_perspective(camera().vertical_angle_of_view(), aspect, near_clip(), far_clip()));
+        threedimutil::mult_matrix(threedimutil::make_perspective(camera().fov(), aspect, near_clip(), far_clip()));
     }
     
     void TrackballWidget::setModelViewMatrix()

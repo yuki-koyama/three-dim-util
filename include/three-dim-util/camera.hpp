@@ -19,8 +19,8 @@ namespace threedimutil
             None
         };
 
-        double& vertical_angle_of_view() { return m_vertical_angle_of_view; }
-        double vertical_angle_of_view() const { return m_vertical_angle_of_view; }
+        double& fov() { return m_fov; }
+        double fov() const { return m_fov; }
 
         Eigen::Vector3d& position() { return m_position; }
         const Eigen::Vector3d& position() const { return m_position; }
@@ -41,7 +41,7 @@ namespace threedimutil
         void EndTrackball();
 
     private:
-        double m_vertical_angle_of_view = M_PI * 45.0 / 180.0;
+        double m_fov = M_PI * 45.0 / 180.0;
 
         Eigen::Vector3d m_position;
         Eigen::Vector3d m_target;
