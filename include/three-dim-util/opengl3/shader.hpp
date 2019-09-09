@@ -103,14 +103,15 @@ namespace threedimutil
         static const std::string code = R"glsl(
 #version 330
 
+        uniform vec4 color;
+
         in vec3 v_position;
         in vec3 v_normal;
         out vec4 frag_color;
 
         void main()
         {
-            frag_color.xyz = vec3(0.1);
-            frag_color.w   = 0.8;
+            frag_color = color;
         }
         )glsl";
 
