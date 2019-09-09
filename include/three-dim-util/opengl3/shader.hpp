@@ -35,6 +35,8 @@ namespace threedimutil
         static const std::string code = R"glsl(
 #version 330
 
+        uniform vec3 diffuse_color;
+
         in vec3 v_position;
         in vec3 v_normal;
         out vec4 frag_color;
@@ -50,13 +52,11 @@ namespace threedimutil
             vec3 light_0_col = vec3(1.0, 1.0, 0.9);
             vec3 light_1_col = vec3(0.5, 0.6, 0.7);
 
-            vec3 diffuse_col = vec3(0.9);
-
             // Diffuse
             float diffuse_0 = max(dot(N, light_0_dir), 0.0);
             float diffuse_1 = max(dot(N, light_1_dir), 0.0);
 
-            vec3 diffuse_sum = diffuse_col * light_0_col * diffuse_0 + diffuse_col * light_1_col * diffuse_1;
+            vec3 diffuse_sum = diffuse_color * light_0_col * diffuse_0 + diffuse_color * light_1_col * diffuse_1;
 
             // Specular
             vec3 H_0 = normalize(V + light_0_dir);
